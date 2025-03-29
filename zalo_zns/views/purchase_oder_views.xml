@@ -18,7 +18,20 @@
             </div>
             <field name="partner_id" position="after">
                 <field name="partner_phone_normalized" readonly="1" invisible="1"/>
+                <field name="has_zns_notifications" invisible="1"/>
             </field>
+        </field>
+    </record>
+
+    <!-- Update filter in purchase order search view -->
+    <record id="view_purchase_order_filter_inherit_zalo_zns" model="ir.ui.view">
+        <field name="name">purchase.order.list.select.inherit.zalo.zns</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
+        <field name="arch" type="xml">
+            <filter name="my_purchases" position="after">
+                <filter string="With ZNS Notifications" name="with_zns" domain="[('has_zns_notifications', '=', True)]"/>
+            </filter>
         </field>
     </record>
 </odoo>

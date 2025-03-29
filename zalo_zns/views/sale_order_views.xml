@@ -18,18 +18,19 @@
             </div>
             <field name="partner_id" position="after">
                 <field name="partner_phone_normalized" readonly="1" invisible="1"/>
+                <field name="has_zns_notifications" invisible="1"/>
             </field>
         </field>
     </record>
 
-    <!-- Optional: Add filter to Sales Order search view -->
+    <!-- Update filter to use the new searchable field -->
     <record id="view_sales_order_filter_inherit_zalo_zns" model="ir.ui.view">
         <field name="name">sale.order.list.select.inherit.zalo.zns</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_sales_order_filter"/>
         <field name="arch" type="xml">
             <filter name="my_sale_orders_filter" position="after">
-                <filter string="With ZNS Notifications" name="with_zns" domain="[('zns_notification_count', '>', 0)]"/>
+                <filter string="With ZNS Notifications" name="with_zns" domain="[('has_zns_notifications', '=', True)]"/>
             </filter>
         </field>
     </record>

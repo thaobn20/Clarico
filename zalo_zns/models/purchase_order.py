@@ -1,3 +1,4 @@
+# models/purchase_order.py
 from odoo import api, fields, models, _
 import json
 import requests
@@ -12,12 +13,16 @@ class PurchaseOrder(models.Model):
                                           domain=[('model', '=', 'purchase.order')],
                                           string='ZNS Notifications')
     zns_notification_count = fields.Integer(compute='_compute_zns_notification_count')
+    has_zns_notifications = fields.Boolean(string='Has ZNS Notifications', 
+                                          compute='_compute_zns_notification_count', 
+                                          store=True)  # This field will be searchable
     partner_phone_normalized = fields.Char(compute='_compute_partner_phone_normalized', store=True)
     
     @api.depends('zns_notification_ids')
     def _compute_zns_notification_count(self):
         for record in self:
             record.zns_notification_count = len(record.zns_notification_ids)
+            record.has_zns_notifications = bool(record.zns_notification_ids)
     
     @api.depends('partner_id.phone', 'partner_id.mobile')
     def _compute_partner_phone_normalized(self):

@@ -3,22 +3,29 @@ from odoo.exceptions import UserError
 import requests
 import json
 import logging
-import traceback
-import pprint
 
 _logger = logging.getLogger(__name__)
 
 class ZaloZNSConfig(models.Model):
     _name = 'zalo.zns.config'
     _description = 'Zalo ZNS Configuration'
-    
-    # Base fields first
+
     name = fields.Char(string='Name', required=True, default='ZNS Configuration')
     api_url = fields.Char(string='API URL', required=True, default='https://zns.bom.asia/api/')
     api_key = fields.Char(string='API Key', required=True)
     active = fields.Boolean(default=True)
+    template_fetch_date = fields.Datetime(string='Last Template Fetch Date')
+    company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
     
-    # Add debug fields here too (not in another file)
+    # For direct Zalo API integration (alternative)
+    use_direct_api = fields.Boolean(string='Use Direct Zalo API', default=False)
+    zalo_app_id = fields.Char(string='Zalo App ID')
+    zalo_app_secret = fields.Char(string='Zalo App Secret')
+    zalo_access_token = fields.Char(string='Zalo Access Token')
+    zalo_refresh_token = fields.Char(string='Zalo Refresh Token')
+    zalo_token_expire = fields.Datetime(string='Token Expiry Date')
+    
+    # Debug-related fields
     debug_mode = fields.Boolean(string='Debug Mode', default=False,
                                help='Enable detailed logging for troubleshooting')
     test_mode = fields.Boolean(string='Test Mode', default=False,
@@ -26,6 +33,11 @@ class ZaloZNSConfig(models.Model):
     log_retention_days = fields.Integer(string='Log Retention (Days)', default=30,
                                        help='Number of days to keep detailed logs')
     
+    _sql_constraints = [
+        ('company_config_unique', 
+         'UNIQUE(company_id)', 
+         'Only one ZNS configuration allowed per company!')
+    ]
     # Other fields...
     def test_connection(self):
         self.ensure_one()

@@ -18,7 +18,20 @@
             </div>
             <field name="partner_id" position="after">
                 <field name="partner_phone_normalized" readonly="1" invisible="1"/>
+                <field name="has_zns_notifications" invisible="1"/>
             </field>
+        </field>
+    </record>
+
+    <!-- Update filter in invoice search view -->
+    <record id="view_account_move_filter_inherit_zalo_zns" model="ir.ui.view">
+        <field name="name">account.move.select.inherit.zalo.zns</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_move_filter"/>
+        <field name="arch" type="xml">
+            <filter name="posted" position="after">
+                <filter string="With ZNS Notifications" name="with_zns" domain="[('has_zns_notifications', '=', True)]"/>
+            </filter>
         </field>
     </record>
 </odoo>
