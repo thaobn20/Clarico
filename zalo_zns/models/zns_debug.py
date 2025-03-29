@@ -1,3 +1,4 @@
+# models/zns_debug.py
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 import json
@@ -90,3 +91,136 @@ class ZaloZNSDebugLog(models.Model):
                         len(old_logs), retention_days)
             
         return True
+
+
+class ZaloZNSConfigExtension(models.Model):
+    _inherit = 'zalo.zns.config'
+    
+    # Add debug fields
+    debug_mode = fields.Boolean(string='Debug Mode', default=False,
+                               help='Enable detailed logging for troubleshooting')
+    test_mode = fields.Boolean(string='Test Mode', default=False,
+                              help='Use test endpoint and avoid sending real notifications')
+    log_retention_days = fields.Integer(string='Log Retention (Days)', default=30,
+                                       help='Number of days to keep detailed logs')
+    
+    def clear_old_logs(self):
+        """Manual method to clear old logs"""
+        self.ensure_one()
+        self.env['zalo.zns.debug.log'].auto_clean_logs()
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': _('Logs Cleaned'),
+                'message': _('Old debug logs have been cleared based on retention policy.'),
+                'sticky': False,
+                'type': 'success',
+            }
+        }
+
+
+class ZaloZNSTemplateExtension(models.Model):
+    _inherit = 'zalo.zns.template'
+    
+    # Add debug fields
+    last_test_date = fields.Datetime(string='Last Test Date')
+    last_test_result = fields.Text(string='Last Test Result')
+    debug_notes = fields.Text(string='Debug Notes')
+
+
+class ZaloZNSHistoryExtension(models.Model):
+    _inherit = 'zalo.zns.history'
+    
+    debug_info = fields.Text(string='Debug Info', groups="base.group_system")
+    
+    def retry_send(self):
+        """Retry sending a failed notification"""
+        self.ensure_one()
+        
+        if self.status != 'failed':
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': _('Cannot Retry'),
+                    'message': _('Only failed notifications can be retried.'),
+                    'sticky': False,
+                    'type': 'warning',
+                }
+            }
+            
+        # Check if original record still exists
+        if not self.model or not self.res_id:
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': _('Cannot Retry'),
+                    'message': _('Original record information is missing.'),
+                    'sticky': False,
+                    'type': 'warning',
+                }
+            }
+            
+        original_record = self.env[self.model].browse(self.res_id)
+        if not original_record.exists():
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': _('Cannot Retry'),
+                    'message': _('Original record no longer exists.'),
+                    'sticky': False,
+                    'type': 'warning',
+                }
+            }
+            
+        # Only retry if the record has the send method
+        if not hasattr(original_record, '_send_zns_notification'):
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': _('Cannot Retry'),
+                    'message': _('Record type does not support sending notifications.'),
+                    'sticky': False,
+                    'type': 'warning',
+                }
+            }
+            
+        # Add debug log
+        self.env['zalo.zns.debug.log'].add_log(
+            title=f"Retrying notification #{self.id}",
+            content=f"Manual retry for notification to {self.phone} using template '{self.template_id.name}'",
+            level='info',
+            model='zalo.zns.history',
+            res_id=self.id
+        )
+        
+        # Retry sending
+        try:
+            result = original_record._send_zns_notification(self.template_id)
+            return result
+        except Exception as e:
+            error_details = traceback.format_exc()
+            
+            # Log the error
+            self.env['zalo.zns.debug.log'].add_log(
+                title=f"Retry failed for notification #{self.id}",
+                content=f"Error: {str(e)}\n\n{error_details}",
+                level='error',
+                model='zalo.zns.history',
+                res_id=self.id
+            )
+            
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': _('Retry Failed'),
+                    'message': _('Failed to retry notification: %s') % str(e),
+                    'sticky': False,
+                    'type': 'danger',
+                }
+            }

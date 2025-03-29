@@ -9,20 +9,24 @@ import pprint
 _logger = logging.getLogger(__name__)
 
 class ZaloZNSConfig(models.Model):
-    _inherit = 'zalo.zns.config'
+    _name = 'zalo.zns.config'
+    _description = 'Zalo ZNS Configuration'
     
-    # Add debug mode field
+    # Base fields first
+    name = fields.Char(string='Name', required=True, default='ZNS Configuration')
+    api_url = fields.Char(string='API URL', required=True, default='https://zns.bom.asia/api/')
+    api_key = fields.Char(string='API Key', required=True)
+    active = fields.Boolean(default=True)
+    
+    # Add debug fields here too (not in another file)
     debug_mode = fields.Boolean(string='Debug Mode', default=False,
                                help='Enable detailed logging for troubleshooting')
-    
-    # Add test mode field
     test_mode = fields.Boolean(string='Test Mode', default=False,
                               help='Use test endpoint and avoid sending real notifications')
-    
-    # Add log retention
     log_retention_days = fields.Integer(string='Log Retention (Days)', default=30,
                                        help='Number of days to keep detailed logs')
     
+    # Other fields...
     def test_connection(self):
         self.ensure_one()
         try:
