@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- wizard/zns_debug_wizards_views.xml -->
+<odoo>
+    <!-- Template Test Result Wizard -->
+    <record id="view_zalo_zns_template_test_result_form" model="ir.ui.view">
+        <field name="name">zalo.zns.template.test.result.form</field>
+        <field name="model">zalo.zns.template.test.result</field>
+        <field name="arch" type="xml">
+            <form string="Template Test Results">
+                <field name="has_errors" invisible="1"/>
+                <field name="has_warnings" invisible="1"/>
+                <field name="record_id" invisible="1"/>
+                <field name="record_model" invisible="1"/>
+                
+                <div class="alert alert-danger" role="alert" attrs="{'invisible': [('has_errors', '=', False)]}">
+                    <strong>Error!</strong> The template test encountered errors. Please fix them before using this template.
+                </div>
+                
+                <div class="alert alert-warning" role="alert" attrs="{'invisible': [('has_warnings', '=', False), ('has_errors', '=', True)]}">
+                    <strong>Warning!</strong> The template test found some warnings. The template may still work but should be improved.
+                </div>
+                
+                <div class="alert alert-success" role="alert" attrs="{'invisible': ['|', ('has_errors', '=', True), ('has_warnings', '=', True)]}">
+                    <strong>Success!</strong> The template test completed successfully.
+                </div>
+                
+                <group>
+                    <field name="template_id" readonly="1"/>
+                </group>
+                
+                <notebook>
+                    <page string="Test Result">
+                        <field name="test_result" widget="text" readonly="1"/>
+                    </page>
+                </notebook>
+                
+                <footer>
+                    <button name="action_view_record" string="View Test Record" type="object" class="btn-primary"/>
+                    <button name="action_create_test_notification" string="Create Test Notification" type="object" class="btn-secondary" attrs="{'invisible': [('has_errors', '=', True)]}"/>
+                    <button name="action_send_real_notification" string="Send Real Notification" type="object" class="btn-secondary" attrs="{'invisible': [('has_errors', '=', True)]}"/>
+                    <button string="Close" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    <!-- Debug Tools Wizard -->
+    <record id="view_zalo_zns_debug_tools_form" model="ir.ui.view">
+        <field name="name">zalo.zns.debug.tools.form</field>
+        <field name="model">zalo.zns.debug.tools</field>
+        <field name="arch" type="xml">
+            <form string="ZNS Debug Tools">
+                <p class="alert alert-info">
+                    These tools help diagnose and fix issues with your Zalo ZNS integration.
+                </p>
+                <group>
+                    <field name="debug_action"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                </group>
+                
+                <group attrs="{'invisible': [('debug_action', '!=', 'check_failed')]}">
+                    <field name="date_from" attrs="{'required': [('debug_action', '=', 'check_failed')]}"/>
+                    <field name="date_to" attrs="{'required': [('debug_action', '=', 'check_failed')]}"/>
+                </group>
+                
+                <footer>
+                    <button name="action_execute" string="Execute" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    <!-- Action to open the debug tools -->
+    <record id="action_zalo_zns_debug_tools" model="ir.actions.act_window">
+        <field name="name">ZNS Debug Tools</field>
+        <field name="res_model">zalo.zns.debug.tools</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    
+    <!-- Add the debug tools to the menu -->
+    <menuitem 
+        id="menu_zalo_zns_debug_tools" 
+        name="Debug Tools" 
+        parent="zalo_zns.menu_zalo_zns_configuration" 
+        action="action_zalo_zns_debug_tools"
+        sequence="110"
+        groups="base.group_system"/>
+</odoo>

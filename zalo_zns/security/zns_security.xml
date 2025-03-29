@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- security/zns_security.xml -->
+<odoo>
+    <data noupdate="0">
+        <!-- ZNS User Group -->
+        <record id="group_zalo_zns_user" model="res.groups">
+            <field name="name">Zalo ZNS User</field>
+            <field name="category_id" ref="base.module_category_sales_sales"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+        
+        <!-- ZNS Manager Group -->
+        <record id="group_zalo_zns_manager" model="res.groups">
+            <field name="name">Zalo ZNS Manager</field>
+            <field name="category_id" ref="base.module_category_sales_sales"/>
+            <field name="implied_ids" eval="[(4, ref('group_zalo_zns_user'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+        
+        <!-- Record Rules -->
+        <record id="rule_zalo_zns_template_company" model="ir.rule">
+            <field name="name">ZNS Template: Multi-company rule</field>
+            <field name="model_id" ref="model_zalo_zns_template"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+        
+        <record id="rule_zalo_zns_config_company" model="ir.rule">
+            <field name="name">ZNS Config: Multi-company rule</field>
+            <field name="model_id" ref="model_zalo_zns_config"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+        
+        <record id="rule_zalo_zns_history_company" model="ir.rule">
+            <field name="name">ZNS History: Multi-company rule</field>
+            <field name="model_id" ref="model_zalo_zns_history"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+    </data>
+</odoo>

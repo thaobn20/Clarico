@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- views/zns_config_views_debug.xml -->
+<odoo>
+    <record id="view_zalo_zns_config_form_debug" model="ir.ui.view">
+        <field name="name">zalo.zns.config.form.debug</field>
+        <field name="model">zalo.zns.config</field>
+        <field name="inherit_id" ref="zalo_zns.view_zalo_zns_config_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Debugging" groups="base.group_system">
+                    <group>
+                        <field name="debug_mode"/>
+                        <field name="test_mode"/>
+                        <field name="log_retention_days"/>
+                    </group>
+                    <div class="alert alert-info" role="alert">
+                        <strong>Debug Mode</strong>: Enables detailed logging for troubleshooting. Check server logs for complete information.
+                    </div>
+                    <div class="alert alert-warning" role="alert">
+                        <strong>Test Mode</strong>: Creates notification records but doesn't actually send them. Use this to test your integration.
+                    </div>
+                    <button name="clear_old_logs" string="Clear Old Logs" type="object" class="btn-secondary" groups="base.group_system"/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Detailed error view for ZNS History -->
+    <record id="view_zalo_zns_history_form_debug" model="ir.ui.view">
+        <field name="name">zalo.zns.history.form.debug</field>
+        <field name="model">zalo.zns.history</field>
+        <field name="inherit_id" ref="zalo_zns.view_zalo_zns_history_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@string='Error Message']" position="replace">
+                <page string="Error Message" attrs="{'invisible': [('status', '!=', 'failed')]}">
+                    <group>
+                        <field name="error_message" widget="text" readonly="1"/>
+                    </group>
+                    <div class="alert alert-info" role="alert" groups="base.group_system">
+                        For more detailed error information, check the server logs. If debug mode is enabled, look for lines starting with "=== ZNS DEBUG: ".
+                    </div>
+                    <button name="retry_send" string="Retry Sending" type="object" class="btn-primary" groups="zalo_zns.group_zalo_zns_manager"/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Add debug tools to the ZNS template form -->
+    <record id="view_zalo_zns_template_form_debug" model="ir.ui.view">
+        <field name="name">zalo.zns.template.form.debug</field>
+        <field name="model">zalo.zns.template</field>
+        <field name="inherit_id" ref="zalo_zns.view_zalo_zns_template_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <header groups="zalo_zns.group_zalo_zns_manager">
+                    <button name="action_test_template" string="Test Template" type="object" class="btn-primary"/>
+                    <button name="action_preview_template" string="Preview Template" type="object" class="btn-secondary"/>
+                </header>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Debug Information" groups="base.group_system">
+                    <group>
+                        <field name="last_test_date" readonly="1"/>
+                        <field name="last_test_result" readonly="1"/>
+                    </group>
+                    <field name="debug_notes" placeholder="Add notes about this template for debugging purposes..."/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Add debug logs view -->
+    <record id="view_zalo_zns_debug_log_tree" model="ir.ui.view">
+        <field name="name">zalo.zns.debug.log.tree</field>
+        <field name="model">zalo.zns.debug.log</field>
+        <field name="arch" type="xml">
+            <tree string="ZNS Debug Logs" decoration-danger="log_level=='error'" decoration-warning="log_level=='warning'" decoration-info="log_level=='info'">
+                <field name="create_date"/>
+                <field name="name"/>
+                <field name="log_level"/>
+                <field name="model"/>
+                <field name="res_id"/>
+                <field name="user_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_zalo_zns_debug_log_form" model="ir.ui.view">
+        <field name="name">zalo.zns.debug.log.form</field>
+        <field name="model">zalo.zns.debug.log</field>
+        <field name="arch" type="xml">
+            <form string="ZNS Debug Log">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="log_level"/>
+                            <field name="create_date" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="model"/>
+                            <field name="res_id"/>
+                            <field name="user_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Log Content">
+                            <field name="log_content" widget="text"/>
+                        </page>
+                        <page string="Request Data" attrs="{'invisible': [('request_data', '=', False)]}">
+                            <field name="request_data" widget="text"/>
+                        </page>
+                        <page string="Response Data" attrs="{'invisible': [('response_data', '=', False)]}">
+                            <field name="response_data" widget="text"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_zalo_zns_debug_log" model="ir.actions.act_window">
+        <field name="name">ZNS Debug Logs</field>
+        <field name="res_model">zalo.zns.debug.log</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_today': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No debug logs found!
+            </p>
+            <p>
+                Enable debug mode in ZNS Configuration to generate detailed logs.
+            </p>
+        </field>
+    </record>
+
+    <menuitem 
+        id="menu_zalo_zns_debug_log" 
+        name="Debug Logs" 
+        parent="zalo_zns.menu_zalo_zns_configuration" 
+        action="action_zalo_zns_debug_log"
+        sequence="100"
+        groups="base.group_system"/>
+</odoo>

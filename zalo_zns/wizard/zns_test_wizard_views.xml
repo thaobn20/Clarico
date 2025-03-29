@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- wizard/zns_test_wizard_views.xml -->
+<odoo>
+    <record id="view_zalo_zns_send_wizard_form" model="ir.ui.view">
+        <field name="name">zalo.zns.send.wizard.form</field>
+        <field name="model">zalo.zns.send.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Send ZNS Notification">
+                <group>
+                    <field name="model" invisible="1"/>
+                    <field name="res_id" invisible="1"/>
+                    <field name="company_id" invisible="1" groups="base.group_multi_company"/>
+                    <field name="phone"/>
+                    <field name="template_id" options="{'no_create': True}" domain="[('status', '=', 'active'), ('company_id', '=', company_id)]"/>
+                </group>
+                <footer>
+                    <button name="action_send" string="Send" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_zalo_zns_update_status_wizard_form" model="ir.ui.view">
+        <field name="name">zalo.zns.update.status.wizard.form</field>
+        <field name="model">zalo.zns.update.status.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Update ZNS Message Status">
+                <group>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                </group>
+                <footer>
+                    <button name="action_update_status" string="Update Status" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_zalo_zns_update_status" model="ir.actions.act_window">
+        <field name="name">Update ZNS Status</field>
+        <field name="res_model">zalo.zns.update.status.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem 
+        id="menu_zalo_zns_update_status" 
+        name="Update Statuses" 
+        parent="menu_zalo_zns_configuration" 
+        action="action_zalo_zns_update_status"
+        sequence="30"/>
+</odoo>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- views/account_move_views.xml -->
+<odoo>
+    <record id="view_account_move_form_inherit_zalo_zns" model="ir.ui.view">
+        <field name="name">account.move.form.inherit.zalo.zns</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button name="action_send_zns" type="object" class="oe_stat_button" icon="fa-envelope" attrs="{'invisible': [('state', 'not in', ['posted'])]}">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="zns_notification_count" widget="statinfo" nolabel="1"/>
+                        </span>
+                        <span class="o_stat_text">ZNS</span>
+                    </div>
+                </button>
+            </div>
+            <field name="partner_id" position="after">
+                <field name="partner_phone_normalized" readonly="1" invisible="1"/>
+            </field>
+        </field>
+    </record>
+</odoo>

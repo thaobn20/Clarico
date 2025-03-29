@@ -1,0 +1,14 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_zalo_zns_config_user,zalo.zns.config.user,model_zalo_zns_config,zalo_zns.group_zalo_zns_user,1,0,0,0
+access_zalo_zns_config_manager,zalo.zns.config.manager,model_zalo_zns_config,zalo_zns.group_zalo_zns_manager,1,1,1,1
+access_zalo_zns_template_user,zalo.zns.template.user,model_zalo_zns_template,zalo_zns.group_zalo_zns_user,1,0,0,0
+access_zalo_zns_template_manager,zalo.zns.template.manager,model_zalo_zns_template,zalo_zns.group_zalo_zns_manager,1,1,1,1
+access_zalo_zns_template_param_user,zalo.zns.template.param.user,model_zalo_zns_template_param,zalo_zns.group_zalo_zns_user,1,0,0,0
+access_zalo_zns_template_param_manager,zalo.zns.template.param.manager,model_zalo_zns_template_param,zalo_zns.group_zalo_zns_manager,1,1,1,1
+access_zalo_zns_history_user,zalo.zns.history.user,model_zalo_zns_history,zalo_zns.group_zalo_zns_user,1,1,1,0
+access_zalo_zns_history_manager,zalo.zns.history.manager,model_zalo_zns_history,zalo_zns.group_zalo_zns_manager,1,1,1,1
+access_zalo_zns_send_wizard_user,zalo.zns.send.wizard.user,model_zalo_zns_send_wizard,zalo_zns.group_zalo_zns_user,1,1,1,0
+access_zalo_zns_update_status_wizard_manager,zalo.zns.update.status.wizard.manager,model_zalo_zns_update_status_wizard,zalo_zns.group_zalo_zns_manager,1,1,1,0
+access_zalo_zns_debug_log_manager,zalo.zns.debug.log.manager,model_zalo_zns_debug_log,zalo_zns.group_zalo_zns_manager,1,1,1,1
+access_zalo_zns_template_test_result_user,zalo.zns.template.test.result.user,model_zalo_zns_template_test_result,zalo_zns.group_zalo_zns_user,1,1,1,0
+access_zalo_zns_debug_tools_system,zalo.zns.debug.tools.system,model_zalo_zns_debug_tools,base.group_system,1,1,1,0

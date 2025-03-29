@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- views/sale_order_views.xml -->
+<odoo>
+    <record id="view_sale_order_form_inherit_zalo_zns" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.zalo.zns</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button name="action_send_zns" type="object" class="oe_stat_button" icon="fa-envelope" attrs="{'invisible': [('state', 'in', ['draft', 'sent', 'cancel'])]}">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="zns_notification_count" widget="statinfo" nolabel="1"/>
+                        </span>
+                        <span class="o_stat_text">ZNS</span>
+                    </div>
+                </button>
+            </div>
+            <field name="partner_id" position="after">
+                <field name="partner_phone_normalized" readonly="1" invisible="1"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Optional: Add filter to Sales Order search view -->
+    <record id="view_sales_order_filter_inherit_zalo_zns" model="ir.ui.view">
+        <field name="name">sale.order.list.select.inherit.zalo.zns</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <filter name="my_sale_orders_filter" position="after">
+                <filter string="With ZNS Notifications" name="with_zns" domain="[('zns_notification_count', '>', 0)]"/>
+            </filter>
+        </field>
+    </record>
+
+    <!-- Optional: Add ZNS notification count to Sales Orders list view -->
+    <record id="view_order_tree_inherit_zalo_zns" model="ir.ui.view">
+        <field name="name">sale.order.tree.inherit.zalo.zns</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <field name="state" position="after">
+                <field name="zns_notification_count" string="ZNS Count" optional="hide"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Action to view ZNS notifications related to a specific sale order -->
+    <record id="action_view_sale_order_zns_notifications" model="ir.actions.act_window">
+        <field name="name">ZNS Notifications</field>
+        <field name="res_model">zalo.zns.history</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('model', '=', 'sale.order'), ('res_id', '=', active_id)]</field>
+        <field name="context">{'create': False}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No ZNS notifications sent yet!
+            </p>
+            <p>
+                Send your first notification using the ZNS button on the sale order.
+            </p>
+        </field>
+    </record>
+
+    <!-- Add ZNS notifications to Sale Order form action menu -->
+    <record id="view_sale_order_form_inherit_zalo_zns_action" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.zalo.zns.action</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button 
+                    name="%(action_view_sale_order_zns_notifications)d" 
+                    type="action" 
+                    string="View ZNS History" 
+                    attrs="{'invisible': [('zns_notification_count', '=', 0)]}" 
+                    groups="zalo_zns.group_zalo_zns_user"
+                    class="btn-secondary"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

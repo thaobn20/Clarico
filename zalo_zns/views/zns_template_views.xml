@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- views/zns_template_views.xml -->
+<odoo>
+    <record id="view_zalo_zns_template_form" model="ir.ui.view">
+        <field name="name">zalo.zns.template.form</field>
+        <field name="model">zalo.zns.template</field>
+        <field name="arch" type="xml">
+            <form string="Zalo ZNS Template">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="e.g., Sales Order Confirmation"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="template_id"/>
+                            <field name="template_code"/>
+                            <field name="status"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="model_id"/>
+                            <field name="model_name" invisible="1"/>
+                            <field name="trigger"/>
+                            <field name="is_so_template"/>
+                            <field name="is_po_template"/>
+                            <field name="is_invoice_template"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Template Content">
+                            <field name="template_content" widget="text" placeholder="Template content from Zalo..."/>
+                        </page>
+                        <page string="Parameters">
+                            <field name="params">
+                                <tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="field_id" domain="[('model_id', '=', parent.model_id)]" options="{'no_create': True}"/>
+                                    <field name="default_value"/>
+                                    <field name="is_required"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_zalo_zns_template_tree" model="ir.ui.view">
+        <field name="name">zalo.zns.template.tree</field>
+        <field name="model">zalo.zns.template</field>
+        <field name="arch" type="xml">
+            <tree string="Zalo ZNS Templates">
+                <field name="name"/>
+                <field name="template_id"/>
+                <field name="status"/>
+                <field name="model_id"/>
+                <field name="is_so_template"/>
+                <field name="is_po_template"/>
+                <field name="is_invoice_template"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_zalo_zns_template_search" model="ir.ui.view">
+        <field name="name">zalo.zns.template.search</field>
+        <field name="model">zalo.zns.template</field>
+        <field name="arch" type="xml">
+            <search string="Search ZNS Templates">
+                <field name="name"/>
+                <field name="template_id"/>
+                <field name="template_code"/>
+                <filter string="Sales Order Templates" name="so_templates" domain="[('is_so_template', '=', True)]"/>
+                <filter string="Purchase Order Templates" name="po_templates" domain="[('is_po_template', '=', True)]"/>
+                <filter string="Invoice Templates" name="invoice_templates" domain="[('is_invoice_template', '=', True)]"/>
+                <filter string="Active" name="active_templates" domain="[('status', '=', 'active')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="group_by_status" context="{'group_by': 'status'}"/>
+                    <filter string="Model" name="group_by_model" context="{'group_by': 'model_id'}"/>
+                    <filter string="Company" name="group_by_company" context="{'group_by': 'company_id'}" groups="base.group_multi_company"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_zalo_zns_template" model="ir.actions.act_window">
+        <field name="name">ZNS Templates</field>
+        <field name="res_model">zalo.zns.template</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No ZNS templates found!
+            </p>
+            <p>
+                Use the "Fetch Templates" button in the ZNS Configuration to get templates from Zalo.
+            </p>
+        </field>
+    </record>
+</odoo>

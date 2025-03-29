@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- views/dashboard_views.xml -->
+<odoo>
+    <record id="view_zalo_zns_dashboard" model="ir.ui.view">
+        <field name="name">zalo.zns.dashboard</field>
+        <field name="model">zalo.zns.history</field>
+        <field name="arch" type="xml">
+            <kanban class="o_zalo_zns_dashboard" create="0">
+                <field name="id"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_kanban_record_has_image_fill">
+                            <div class="o_kanban_dashboard_content">
+                                <div class="o_zns_dashboard"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="action_zalo_zns_dashboard" model="ir.actions.act_window">
+        <field name="name">ZNS Dashboard</field>
+        <field name="res_model">zalo.zns.history</field>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="view_zalo_zns_dashboard"/>
+        <field name="context">{'search_default_this_week': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No ZNS data to display!
+            </p>
+            <p>
+                Send ZNS notifications to see statistics here.
+            </p>
+        </field>
+    </record>
+</odoo>

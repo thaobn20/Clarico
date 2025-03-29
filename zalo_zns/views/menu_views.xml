@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- views/menu_views.xml -->
+<odoo>
+    <menuitem 
+        id="menu_zalo_zns_root" 
+        name="Zalo ZNS" 
+        web_icon="zalo_zns,static/description/icon.png"
+        sequence="100"/>
+        
+    <menuitem 
+        id="menu_zalo_zns_dashboard" 
+        name="Dashboard" 
+        parent="menu_zalo_zns_root" 
+        action="action_zalo_zns_dashboard"
+        sequence="1"/>
+        
+    <menuitem 
+        id="menu_zalo_zns_history" 
+        name="ZNS History" 
+        parent="menu_zalo_zns_root" 
+        action="action_zalo_zns_history"
+        sequence="10"/>
+        
+    <menuitem 
+        id="menu_zalo_zns_configuration" 
+        name="Configuration" 
+        parent="menu_zalo_zns_root" 
+        sequence="100"/>
+        
+    <menuitem 
+        id="menu_zalo_zns_template" 
+        name="ZNS Templates" 
+        parent="menu_zalo_zns_configuration" 
+        action="action_zalo_zns_template"
+        sequence="10"/>
+        
+    <menuitem 
+        id="menu_zalo_zns_config" 
+        name="ZNS Setup" 
+        parent="menu_zalo_zns_configuration" 
+        action="action_zalo_zns_config"
+        sequence="20"/>
+</odoo>
