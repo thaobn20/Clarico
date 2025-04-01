@@ -31,7 +31,8 @@
         <field name="model">zalo.zns.history</field>
         <field name="inherit_id" ref="zalo_zns.view_zalo_zns_history_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//page[@string='Error Message']" position="replace">
+            <!-- FIXED: Use the position attribute instead of string attribute -->
+            <xpath expr="//notebook/page[1]" position="replace">
                 <page string="Error Message" attrs="{'invisible': [('status', '!=', 'failed')]}">
                     <group>
                         <field name="error_message" widget="text" readonly="1"/>

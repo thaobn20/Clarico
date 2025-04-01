@@ -81,4 +81,4 @@
             </xpath>
         </field>
     </record>
-</odoo>
+</odoo><!-- In views/sale_order_views.xml -->

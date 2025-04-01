@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- views/purchase_order_views.xml -->
+<odoo>
+    <record id="view_purchase_order_form_inherit_zalo_zns" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherit.zalo.zns</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button name="action_send_zns" type="object" class="oe_stat_button" icon="fa-envelope" attrs="{'invisible': [('state', 'in', ['draft', 'sent', 'cancel'])]}">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="zns_notification_count" widget="statinfo" nolabel="1"/>
+                        </span>
+                        <span class="o_stat_text">ZNS</span>
+                    </div>
+                </button>
+            </div>
+            <field name="partner_id" position="after">
+                <field name="partner_phone_normalized" readonly="1" invisible="1"/>
+                <field name="has_zns_notifications" invisible="1"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Update filter in purchase order search view -->
+    <record id="view_purchase_order_filter_inherit_zalo_zns" model="ir.ui.view">
+        <field name="name">purchase.order.list.select.inherit.zalo.zns</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
+        <field name="arch" type="xml">
+            <filter name="my_purchases" position="after">
+                <filter string="With ZNS Notifications" name="with_zns" domain="[('has_zns_notifications', '=', True)]"/>
+            </filter>
+        </field>
+    </record>
+</odoo>
