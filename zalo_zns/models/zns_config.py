@@ -3,6 +3,7 @@ from odoo.exceptions import UserError
 import requests
 import json
 import logging
+import traceback
 
 _logger = logging.getLogger(__name__)
 
@@ -11,7 +12,7 @@ class ZaloZNSConfig(models.Model):
     _description = 'Zalo ZNS Configuration'
 
     name = fields.Char(string='Name', required=True, default='ZNS Configuration')
-    api_url = fields.Char(string='API URL', required=True, default='https://zns.bom.asia/api/')
+    api_url = fields.Char(string='API URL', required=True, default='https://zns.bom.asia/api/v1/send-template')
     api_key = fields.Char(string='API Key', required=True)
     active = fields.Boolean(default=True)
     template_fetch_date = fields.Datetime(string='Last Template Fetch Date')
@@ -39,84 +40,37 @@ class ZaloZNSConfig(models.Model):
          'Only one ZNS configuration allowed per company!')
     ]
     # Other fields...
-    def test_connection(self):
-        self.ensure_one()
-        try:
-            if self.debug_mode:
-                _logger.info("=== ZNS DEBUG: Testing connection with config ID %s ===", self.id)
-                _logger.info("API URL: %s", self.api_url)
-                _logger.info("Direct API: %s", self.use_direct_api)
-                
-            if self.use_direct_api:
-                # Test connection to direct Zalo API
-                headers = {
-                    'access_token': self.zalo_access_token,
-                    'Content-Type': 'application/json'
-                }
-                
-                if self.debug_mode:
-                    _logger.info("Headers: %s", pprint.pformat(headers))
-                
-                response = requests.get(
-                    'https://openapi.zalo.me/v2.0/oa/getoa',
-                    headers=headers
-                )
-            else:
-                # Test connection to ZNS.BOM.ASIA
-                headers = {
-                    'Authorization': f'Bearer {self.api_key}',
-                    'Content-Type': 'application/json'
-                }
-                
-                if self.debug_mode:
-                    _logger.info("Headers: %s", pprint.pformat(headers))
-                
-                endpoint = f'{self.api_url.rstrip("/")}/ping'
-                
-                if self.debug_mode:
-                    _logger.info("Endpoint: %s", endpoint)
-                
-                response = requests.get(endpoint, headers=headers)
-                
-            if self.debug_mode:
-                _logger.info("Response Status: %s", response.status_code)
-                _logger.info("Response Headers: %s", pprint.pformat(dict(response.headers)))
-                _logger.info("Response Body: %s", response.text[:1000])  # Limit response size in logs
-                
-            if response.status_code == 200:
-                if self.debug_mode:
-                    _logger.info("=== ZNS DEBUG: Connection test successful ===")
-                    
-                return {
-                    'type': 'ir.actions.client',
-                    'tag': 'display_notification',
-                    'params': {
-                        'title': _('Connection Successful'),
-                        'message': _('Successfully connected to Zalo ZNS API.'),
-                        'sticky': False,
-                        'type': 'success',
-                    }
-                }
-            else:
-                error_message = f"Status code: {response.status_code}, Response: {response.text}"
-                
-                if self.debug_mode:
-                    _logger.error("=== ZNS DEBUG: Connection test failed ===")
-                    _logger.error("Error: %s", error_message)
-                    
-                raise UserError(
-                    _('Connection failed: %s') % error_message
-                )
-                
-        except Exception as e:
-            error_details = traceback.format_exc()
-            
-            if self.debug_mode:
-                _logger.error("=== ZNS DEBUG: Connection test exception ===")
-                _logger.error("Exception: %s", str(e))
-                _logger.error("Traceback: %s", error_details)
-                
-            raise UserError(_('Connection test failed: %s\n\nDetails: %s') % (str(e), error_details))
+def test_connection(self):
+    try:
+        # If template_id is part of the URL
+        template_id = self.template_id  # Get from your model
+        url = f"https://zns.bom.asia/api/v1/send-template/{template_id}"
+        
+        # Or if template_id is in the payload
+        # url = "https://zns.bom.asia/api/v1/send-template"
+        
+        headers = {
+            'Authorization': f'Bearer {self.access_token}',
+            'Content-Type': 'application/json'
+        }
+        
+        payload = {
+            "app_id": self.app_id,
+            # Include other required parameters
+            # "template_id": self.template_id,  # If needed in payload
+        }
+        
+        response = requests.post(url, headers=headers, json=payload)
+        
+        if response.status_code == 200:
+            return {'success': True, 'message': 'Connection successful!'}
+        else:
+            raise UserError(
+                f"Connection failed: Status code: {response.status_code}, Response: {response.text}"
+            )
+    except Exception as e:
+        error_details = traceback.format_exc()
+        raise UserError(f"Connection failed: {str(e)}\n\nDetails: {error_details}")
             
     # Enhanced template fetching with debugging
     def fetch_templates(self):
