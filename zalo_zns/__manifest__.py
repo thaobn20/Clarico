@@ -42,8 +42,10 @@ Features:
             'views/zns_config_views_debug.xml',
             'wizard/zns_test_wizard_views.xml',
             'wizard/zns_debug_wizards_views.xml',
+            'wizards/zns_template_wizard_views.xml',  # Add this line
             'data/default_templates.xml',
             'data/cron_jobs.xml',
+            
     ],
     'assets': {
         'web.assets_backend': [

@@ -456,3 +456,57 @@ class ZaloZNSTemplateParameter(models.Model):
     required = fields.Boolean(string='Required', default=False)
     description = fields.Char(string='Description')
     template_id = fields.Many2one('zalo.zns.template', string='Template', ondelete='cascade')
+    
+def action_test_template(self):
+    """
+    Open a wizard to test sending this template to a specific number
+    """
+    self.ensure_one()
+    return {
+        'name': _('Test Template'),
+        'type': 'ir.actions.act_window',
+        'view_mode': 'form',
+        'res_model': 'zalo.zns.template.test',  # This wizard model needs to be created
+        'target': 'new',
+        'context': {
+            'default_template_id': self.id,
+        },
+    }
+
+def action_preview_template(self):
+    """
+    Display a preview of how the template will look
+    """
+    self.ensure_one()
+    # Get parameters
+    params = {}
+    for param in self.parameter_ids:
+        # Generate sample data based on parameter type
+        if param.type == 'number':
+            params[param.name] = '123456'
+        elif param.type == 'url':
+            params[param.name] = 'https://example.com'
+        elif param.type == 'email':
+            params[param.name] = 'example@example.com'
+        elif param.type == 'date':
+            params[param.name] = '01/01/2025'
+        else:  # text or default
+            params[param.name] = f'Sample {param.name}'
+    
+    # Generate preview
+    content = self.template_content
+    for name, value in params.items():
+        content = content.replace(f'<{name}>', value)
+    
+    return {
+        'name': _('Template Preview'),
+        'type': 'ir.actions.act_window',
+        'view_mode': 'form',
+        'res_model': 'zalo.zns.template.preview',  # This model needs to be created
+        'target': 'new',
+        'context': {
+            'default_template_id': self.id,
+            'default_content_preview': content,
+            'default_parameters': str(params),
+        },
+    }
