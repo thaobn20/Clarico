@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Create a new external layout that will be used for all reports -->
+    <template id="bom_external_layout">
+        <t t-if="not o" t-set="o" t-value="docs[0]"/>
+        <t t-if="not company">
+            <t t-if="company_id">
+                <t t-set="company" t-value="company_id"/>
+            </t>
+            <t t-elif="o and 'company_id' in o">
+                <t t-set="company" t-value="o.company_id.sudo()"/>
+            </t>
+            <t t-else="else">
+                <t t-set="company" t-value="res_company"/>
+            </t>
+        </t>
+        <div t-attf-class="article {{  }} o_report_layout_standard"
+            t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-call="bom_custom_report.bom_external_layout_standard"/>
+        </div>
+    </template>
+    
+    <!-- Standard BOM External Layout Template -->
+    <template id="bom_external_layout_standard">
+        <div class="header" t-att-style="report_header_style">
+            <div class="row border-bottom pb-2">
+                <div class="col-6">
+                    <div class="bom-company-info">
+                        <div class="bom-company-name mb-1"><strong>AZMARINE TRADING</strong></div>
+                        <div class="bom-company-name mb-2"><strong>SERVICE COMPANY LIMITED</strong></div>
+                        <div t-if="company.street" class="bom-company-address">
+                            <span t-field="company.street" t-options="{'widget': 'text'}"/><br/>
+                            <span t-if="company.street2" t-field="company.street2"/><br t-if="company.street2"/>
+                        </div>
+                        <div class="bom-company-contact">
+                            <div t-if="company.phone">H: <span t-field="company.phone"/></div>
+                            <div t-if="company.email">E: <span t-field="company.email"/></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 text-right">
+                    <img t-if="company.report_logo" t-att-src="image_data_uri(company.report_logo)" style="max-height: 80px;" alt="Logo"/>
+                    <img t-elif="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 80px;" alt="Logo"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="article o_report_layout_standard" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-raw="0"/>
+        </div>
+
+        <div class="footer" t-att-style="report_footer_style">
+            <div class="row">
+                <div class="col-7">
+                    <div t-if="company.report_bank_name" class="text-left">
+                        <div><span>Bank name: </span><span t-field="company.report_bank_name"/></div>
+                        <div t-if="company.report_bank_address"><span>Address: </span><span t-field="company.report_bank_address"/></div>
+                        <div t-if="company.report_swift_code"><span>Swift code: </span><span t-field="company.report_swift_code"/></div>
+                        <div t-if="company.report_account_number"><span>Account number: </span><span t-field="company.report_account_number"/></div>
+                    </div>
+                    <div t-if="company.report_contact_person" class="mt-2">
+                        <div>If you have any questions about this quotation,</div>
+                        <div>please contact <span t-field="company.report_contact_person"/>,
+                            <span t-if="company.report_contact_phone" t-field="company.report_contact_phone"/>,
+                            <span t-if="company.report_contact_email" t-field="company.report_contact_email"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-5 text-right small">
+                    <div>Page: <span class="page"/> / <span class="topage"/></div>
+                </div>
+            </div>
+        </div>
+    </template>
+</odoo>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_company_form_inherit_azmarine" model="ir.ui.view">
+        <field name="name">res.company.form.inherit.azmarine</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Report Settings" name="report_settings">
+                    <group>
+                        <group string="Report Logo">
+                            <field name="report_logo" widget="image" class="oe_avatar"/>
+                            <div class="text-muted">If not set, the company logo will be used</div>
+                        </group>
+                        <group string="Bank Information">
+                            <field name="report_bank_name" placeholder="e.g. Vietcombank-Thu Thiem Branch"/>
+                            <field name="report_bank_address" placeholder="e.g. 72 Nguyen Co Thach, Thu Duc City..."/>
+                            <field name="report_swift_code" placeholder="e.g. BFTVVNVX"/>
+                            <field name="report_account_number" placeholder="e.g. 1053567908"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Contact Information">
+                            <field name="report_contact_person" placeholder="e.g. Thao Bui"/>
+                            <field name="report_contact_phone" placeholder="e.g. +84938697839"/>
+                            <field name="report_contact_email" placeholder="e.g. sales@azmarine.vn"/>
+                        </group>
+                        <group string="Additional Information">
+                            <field name="report_note" placeholder="e.g. Warranty 12 months for new products and 06 for parts."/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
