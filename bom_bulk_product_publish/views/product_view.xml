@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Add filter for unpublished products -->
+    <record id="product_template_search_view_inherit" model="ir.ui.view">
+        <field name="name">product.template.search.inherit.bulk.publish</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="arch" type="xml">
+            <filter name="inactive" position="after">
+                <separator/>
+                <filter string="Unpublished Products" name="unpublished" domain="[('is_published', '=', False)]"/>
+            </filter>
+        </field>
+    </record>
+
+    <!-- Add the Publish Selected Products action -->
+    <record id="action_publish_selected_products" model="ir.actions.server">
+        <field name="name">Publish Selected Products</field>
+        <field name="model_id" ref="product.model_product_template"/>
+        <field name="binding_model_id" ref="product.model_product_template"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">action = records.publish_selected_products()</field>
+    </record>
+    
+    <!-- Add 'Published' field to list view for individual products -->
+    <record id="product_template_tree_view_inherit" model="ir.ui.view">
+        <field name="name">product.template.tree.inherit.publish.button</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="is_published" widget="boolean_toggle"/>
+            </field>
+        </field>
+    </record>
+    
+    <!-- Add a menu item to filter and see unpublished products -->
+    <record id="action_unpublished_products" model="ir.actions.act_window">
+        <field name="name">Unpublished Products</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_unpublished': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No unpublished products found
+            </p>
+            <p>
+                All your products are already published on your website.
+            </p>
+        </field>
+    </record>
+    
+    <menuitem 
+        id="menu_unpublished_products" 
+        name="Unpublished Products" 
+        parent="sale.product_menu_catalog" 
+        action="action_unpublished_products" 
+        sequence="40"/>
+</odoo>
