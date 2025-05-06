@@ -5,16 +5,21 @@ class ServiceCommonMixin(models.AbstractModel):
     _name = 'service.common.mixin'
     _description = 'Shared fields for domain and hosting services'
     _inherit = ['mail.thread', 'mail.activity.mixin']
-
+     # Add this computed field to calculate total extension costs
+    extension_total = fields.Float(
+        string='Total Add-ons Cost',
+        compute='_compute_extension_total',
+        store=True
+    )
     name = fields.Char('Service / Domain Name', required=True, tracking=True)
     customer_id = fields.Many2one('res.partner', string='Customer', required=True, tracking=True)
     start_date = fields.Date('Start Date', default=fields.Date.today, tracking=True)
     end_date = fields.Date('End Date', tracking=True)
     auto_renew = fields.Boolean('Auto Renew', default=True, tracking=True)   
     # In service_common_mixin.py, change:
-    extension_ids = fields.One2many('service.extension', 'service_id_int', string='Add-ons')
+    extension_ids = fields.One2many('service.extension', 'service_id', string='Add-ons')
     # Changed to avoid the automatic extension_ids creation problem
-    extension_ids = fields.One2many('service.extension', 'service_id_int', string='Add-ons')
+    #service_id_int = fields.Many2one('service.common.mixin', string='Service Reference')
     # Add a computed service_id_ref field for proper use in extension_ids
     service_id_ref = fields.Char(compute='_compute_service_id_ref', store=True)
     status = fields.Selection([
@@ -70,12 +75,7 @@ class ServiceCommonMixin(models.AbstractModel):
             ('end_date', '<=', limit_date),
             ('status', '=', 'active')
         ])
- # Add this computed field to calculate total extension costs
-extension_total = fields.Float(
-    string='Total Add-ons Cost',
-    compute='_compute_extension_total',
-    store=True
-)
+
 
 @api.depends('extension_ids', 'extension_ids.price')
 def _compute_extension_total(self):
