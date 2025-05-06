@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_domain_service_user,domain.service.user,model_domain_service,clau_hosting_domain.group_hosting_domain_user,1,0,0,0
+access_domain_service_manager,domain.service.manager,model_domain_service,clau_hosting_domain.group_hosting_domain_manager,1,1,1,1
+access_hosting_service_user,hosting.service.user,model_hosting_service,clau_hosting_domain.group_hosting_domain_user,1,0,0,0
+access_hosting_service_manager,hosting.service.manager,model_hosting_service,clau_hosting_domain.group_hosting_domain_manager,1,1,1,1
+access_service_extension_user,service.extension.user,model_service_extension,clau_hosting_domain.group_hosting_domain_user,1,0,0,0
+access_service_extension_manager,service.extension.manager,model_service_extension,clau_hosting_domain.group_hosting_domain_manager,1,1,1,1
