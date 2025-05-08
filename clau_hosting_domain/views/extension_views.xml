@@ -1,59 +1,34 @@
-<!-- Extension Tree View -->
-<record id="view_service_extension_tree" model="ir.ui.view">
-    <field name="name">service.extension.tree</field>
-    <field name="model">service.extension</field>
-    <field name="arch" type="xml">
-        <tree string="Service Extensions" decoration-danger="end_date and (end_date &lt;= current_date)" decoration-warning="end_date and days_to_expire &lt;= 30 and days_to_expire &gt; 0">
-            <field name="name"/>
-            <field name="service_id"/>
-            <field name="service_type"/>
-            <field name="price" sum="Total"/>
-            <field name="start_date"/>
-            <field name="end_date"/>
-            <field name="days_to_expire"/>
-            <field name="status"/>
-        </tree>
-    </field>
-</record>
-
-<!-- Extension Form View -->
-<record id="view_service_extension_form" model="ir.ui.view">
-    <field name="name">service.extension.form</field>
-    <field name="model">service.extension</field>
-    <field name="arch" type="xml">
-        <form string="Service Extension">
-            <header>
-                <field name="status" widget="statusbar" statusbar_visible="active,expired"/>
-            </header>
-            <sheet>
-                <div class="oe_button_box" name="button_box">
-                    <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
-                        <field name="active" widget="boolean_button" options="{'terminology': 'archive'}"/>
-                    </button>
-                </div>
-                <div class="oe_title">
-                    <h1>
-                        <field name="name" placeholder="e.g. SSL Certificate"/>
-                    </h1>
-                </div>
-                <!-- Add expiration alert banner -->
-                <div class="alert alert-warning" attrs="{'invisible': ['|', ('days_to_expire', '>', 30), ('days_to_expire', '=', 0)]}">
-                    <strong>Warning!</strong> This extension will expire in <field name="days_to_expire" class="oe_inline"/> days.
-                </div>
-                <group>
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form View for Extensions -->
+    <record id="view_service_extension_form" model="ir.ui.view">
+        <field name="name">service.extension.form</field>
+        <field name="model">service.extension</field>
+        <field name="arch" type="xml">
+            <form string="Service Extension">
+                <sheet>
                     <group>
-                        <field name="service_type"/>
-                        <field name="service_id"/>
-                        <field name="start_date"/>
-                        <field name="end_date"/>
-                        <field name="days_to_expire"/>
+                        <group>
+                            <field name="name"/>
+                            <field name="service_type"/>
+                            <field name="service_id" options="{'no_create': True}"/>
+                            <field name="dashboard_id" options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="days_to_expire"/>
+                            <field name="status"/>
+                            <field name="price"/>
+                        </group>
                     </group>
-                    <group>
-                        <field name="price"/>
-                        <field name="description"/>
-                    </group>
-                </group>
-            </sheet>
-        </form>
-    </field>
-</record>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description" placeholder="Enter description here..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

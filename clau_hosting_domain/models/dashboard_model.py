@@ -193,3 +193,23 @@ class ServiceDashboard(models.Model):
                 ]
             }
             record.services_by_customer_chart = json.dumps(data)
+            
+    def action_manage_domains(self):
+        """Navigate to the domain list view"""
+        return {
+            'name': 'Domain Services',
+            'type': 'ir.actions.act_window',
+            'res_model': 'domain.service',
+            'view_mode': 'tree,form',
+            'target': 'current',
+        }
+    
+    def action_manage_hosting(self):
+        """Navigate to the hosting list view"""
+        return {
+            'name': 'Hosting Services',
+            'type': 'ir.actions.act_window',
+            'res_model': 'hosting.service',
+            'view_mode': 'tree,form',
+            'target': 'current',
+        }

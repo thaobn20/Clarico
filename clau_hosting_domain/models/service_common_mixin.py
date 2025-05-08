@@ -5,22 +5,31 @@ class ServiceCommonMixin(models.AbstractModel):
     _name = 'service.common.mixin'
     _description = 'Shared fields for domain and hosting services'
     _inherit = ['mail.thread', 'mail.activity.mixin']
-     # Add this computed field to calculate total extension costs
+    
+    # SO Integration fields
+    sale_order_id = fields.Many2one('sale.order', string='Sales Order', tracking=True)
+    sale_line_id = fields.Many2one('sale.order.line', string='Sales Order Line', tracking=True)
+    
+    # Add this computed field to calculate total extension costs
     extension_total = fields.Float(
         string='Total Add-ons Cost',
         compute='_compute_extension_total',
         store=True
     )
+    
+    # Add a computed field for total service value
+    service_value = fields.Float(
+        string='Service Value',
+        compute='_compute_service_value',
+        store=True
+    )
+    
     name = fields.Char('Service / Domain Name', required=True, tracking=True)
     customer_id = fields.Many2one('res.partner', string='Customer', required=True, tracking=True)
     start_date = fields.Date('Start Date', default=fields.Date.today, tracking=True)
     end_date = fields.Date('End Date', tracking=True)
     auto_renew = fields.Boolean('Auto Renew', default=True, tracking=True)   
-    # In service_common_mixin.py, change:
     extension_ids = fields.One2many('service.extension', 'service_id', string='Add-ons')
-    # Changed to avoid the automatic extension_ids creation problem
-    #service_id_int = fields.Many2one('service.common.mixin', string='Service Reference')
-    # Add a computed service_id_ref field for proper use in extension_ids
     service_id_ref = fields.Char(compute='_compute_service_id_ref', store=True)
     status = fields.Selection([
         ('active', 'Active'),
@@ -60,6 +69,19 @@ class ServiceCommonMixin(models.AbstractModel):
             else:
                 rec.days_to_expire = 0
     
+    @api.depends('extension_ids', 'extension_ids.price')
+    def _compute_extension_total(self):
+        """Calculate the total cost of all extensions"""
+        for record in self:
+            record.extension_total = sum(record.extension_ids.mapped('price'))
+    
+    @api.depends('sale_line_id.price_subtotal', 'extension_total')
+    def _compute_service_value(self):
+        """Calculate the total value of the service including extensions"""
+        for record in self:
+            base_value = record.sale_line_id.price_subtotal if record.sale_line_id else 0.0
+            record.service_value = base_value + record.extension_total
+    
     def action_suspend(self):
         self.write({'status': 'suspended'})
     
@@ -75,10 +97,18 @@ class ServiceCommonMixin(models.AbstractModel):
             ('end_date', '<=', limit_date),
             ('status', '=', 'active')
         ])
-
-
-@api.depends('extension_ids', 'extension_ids.price')
-def _compute_extension_total(self):
-    """Calculate the total cost of all extensions"""
-    for record in self:
-        record.extension_total = sum(record.extension_ids.mapped('price'))
+    
+    def action_view_sale_order(self):
+        """View the linked sales order"""
+        self.ensure_one()
+        if not self.sale_order_id:
+            return {'type': 'ir.actions.act_window_close'}
+           
+        return {
+            'name': 'Sales Order',
+            'type': 'ir.actions.act_window',
+            'res_model': 'sale.order',
+            'res_id': self.sale_order_id.id,
+            'view_mode': 'form',
+            'target': 'current',
+        }

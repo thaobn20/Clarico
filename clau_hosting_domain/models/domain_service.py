@@ -5,7 +5,7 @@ class DomainService(models.Model):
     _name = 'domain.service'
     _inherit = ['service.common.mixin']
     _description = 'Domain Management'
-    end_date = fields.Date('End Date', tracking=True)
+    
     domain_provider = fields.Selection([
         ('nhanhoa', 'Nhan Hoa (.vn)'),
         ('godaddy', 'GoDaddy'),

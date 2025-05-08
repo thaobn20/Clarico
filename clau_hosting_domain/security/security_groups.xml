@@ -1,53 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
-        <!-- Security Groups -->
-        <record id="group_hosting_domain_user" model="res.groups">
-            <field name="name">Hosting/Domain User</field>
-            <field name="category_id" ref="base.module_category_hidden"/>
-        </record>
-        
-        <record id="group_hosting_domain_manager" model="res.groups">
-            <field name="name">Hosting/Domain Manager</field>
-            <field name="category_id" ref="base.module_category_hidden"/>
-            <field name="implied_ids" eval="[(4, ref('group_hosting_domain_user'))]"/>
-            <field name="users" eval="[(4, ref('base.user_admin'))]"/>
-        </record>
-        
-        <!-- Record Rules -->
-        <record id="rule_domain_service_manager" model="ir.rule">
-            <field name="name">Domain Service: Manager sees all domains</field>
-            <field name="model_id" ref="model_domain_service"/>
-            <field name="domain_force">[(1, '=', 1)]</field>
-            <field name="groups" eval="[(4, ref('group_hosting_domain_manager'))]"/>
-        </record>
-        
-        <record id="rule_domain_service_user" model="ir.rule">
-            <field name="name">Domain Service: User sees only their company's domains</field>
-            <field name="model_id" ref="model_domain_service"/>
-            <field name="domain_force">[('company_id', '=', user.company_id.id)]</field>
-            <field name="groups" eval="[(4, ref('group_hosting_domain_user'))]"/>
-        </record>
-        
-        <record id="rule_hosting_service_manager" model="ir.rule">
-            <field name="name">Hosting Service: Manager sees all hostings</field>
-            <field name="model_id" ref="model_hosting_service"/>
-            <field name="domain_force">[(1, '=', 1)]</field>
-            <field name="groups" eval="[(4, ref('group_hosting_domain_manager'))]"/>
-        </record>
-        
-        <record id="rule_hosting_service_user" model="ir.rule">
-            <field name="name">Hosting Service: User sees only their company's hostings</field>
-            <field name="model_id" ref="model_hosting_service"/>
-            <field name="domain_force">[('company_id', '=', user.company_id.id)]</field>
-            <field name="groups" eval="[(4, ref('group_hosting_domain_user'))]"/>
-        </record>
-        
-        <record id="rule_service_extension_manager" model="ir.rule">
-            <field name="name">Service Extension: Manager sees all extensions</field>
-            <field name="model_id" ref="model_service_extension"/>
-            <field name="domain_force">[(1, '=', 1)]</field>
-            <field name="groups" eval="[(4, ref('group_hosting_domain_manager'))]"/>
-        </record>
-    </data>
+    <!-- Security Groups -->
+    <record id="group_hosting_domain_user" model="res.groups">
+        <field name="name">Hosting/Domain User</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+    
+    <record id="group_hosting_domain_manager" model="res.groups">
+        <field name="name">Hosting/Domain Manager</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+        <field name="implied_ids" eval="[(4, ref('group_hosting_domain_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+    </record>
+    
+    <!-- Record Rules -->
+    <record id="rule_domain_service_manager" model="ir.rule">
+        <field name="name">Domain Service: Manager sees all domains</field>
+        <field name="model_id" ref="model_domain_service"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_hosting_domain_manager'))]"/>
+    </record>
+    
+    <record id="rule_domain_service_user" model="ir.rule">
+        <field name="name">Domain Service: User sees only their company's domains</field>
+        <field name="model_id" ref="model_domain_service"/>
+        <field name="domain_force">[('company_id', '=', user.company_id.id)]</field>
+        <field name="groups" eval="[(4, ref('group_hosting_domain_user'))]"/>
+    </record>
+    
+    <record id="rule_hosting_service_manager" model="ir.rule">
+        <field name="name">Hosting Service: Manager sees all hostings</field>
+        <field name="model_id" ref="model_hosting_service"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_hosting_domain_manager'))]"/>
+    </record>
+    
+    <record id="rule_hosting_service_user" model="ir.rule">
+        <field name="name">Hosting Service: User sees only their company's hostings</field>
+        <field name="model_id" ref="model_hosting_service"/>
+        <field name="domain_force">[('company_id', '=', user.company_id.id)]</field>
+        <field name="groups" eval="[(4, ref('group_hosting_domain_user'))]"/>
+    </record>
+    
+    <record id="rule_service_extension_manager" model="ir.rule">
+        <field name="name">Service Extension: Manager sees all extensions</field>
+        <field name="model_id" ref="model_service_extension"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_hosting_domain_manager'))]"/>
+    </record>
 </odoo>

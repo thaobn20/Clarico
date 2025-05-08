@@ -1,71 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
-        <!-- First, define all the actions -->
-        <!-- Hosting Action -->
-        <record id="action_hosting_service" model="ir.actions.act_window">
-            <field name="name">Hosting Services</field>
-            <field name="res_model">hosting.service</field>
-            <field name="view_mode">tree,form</field>
-            <field name="context">{'search_default_active': 1}</field>
-            <field name="help" type="html">
-                <p class="o_view_nocontent_smiling_face">
-                    Create your first hosting service!
-                </p>
-                <p>
-                    Track and manage your hosting services and servers.
-                </p>
-            </field>
-        </record>
-
-        <!-- Extension Action -->
-        <record id="action_service_extension" model="ir.actions.act_window">
-            <field name="name">Service Extensions</field>
-            <field name="res_model">service.extension</field>
-            <field name="view_mode">tree,form</field>
-            <field name="context">{'search_default_active': 1}</field>
-            <field name="help" type="html">
-                <p class="o_view_nocontent_smiling_face">
-                    Create your first service extension!
-                </p>
-                <p>
-                    Manage add-ons and extensions for your hosting and domain services.
-                </p>
-            </field>
-        </record>
-
-        <!-- Main Menu -->
-        <menuitem id="menu_hosting_domain_root" 
-                  name="Hosting &amp; Domains"
-                  web_icon="clau_hosting_domain,static/description/icon.png"
-                  sequence="80"/>
-        
-        <!-- Dashboard Menu -->
-        <menuitem id="menu_service_dashboard" 
-                  name="Dashboard"
-                  parent="menu_hosting_domain_root"
-                  action="action_service_dashboard"
-                  sequence="10"/>
-        
-        <!-- Domain Menu -->
-        <menuitem id="menu_domain_service" 
-                  name="Domains"
-                  parent="menu_hosting_domain_root"
-                  action="action_domain_service"
-                  sequence="20"/>
-        
-        <!-- Hosting Menu -->
-        <menuitem id="menu_hosting_service" 
-                  name="Hosting"
-                  parent="menu_hosting_domain_root"
-                  action="action_hosting_service"
-                  sequence="30"/>
-        
-        <!-- Extensions Menu -->
-        <menuitem id="menu_service_extension" 
-                  name="Extensions"
-                  parent="menu_hosting_domain_root"
-                  action="action_service_extension"
-                  sequence="40"/>
-    </data>
+    <!-- First, define all the actions -->
+    <!-- Domain Action -->
+    <record id="action_domain_service" model="ir.actions.act_window">
+        <field name="name">Domains</field>
+        <field name="res_model">domain.service</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first domain!
+            </p>
+            <p>
+                Track and manage your domains and registrations.
+            </p>
+        </field>
+    </record>
+    
+    <!-- Hosting Action -->
+    <record id="action_hosting_service" model="ir.actions.act_window">
+        <field name="name">Hosting Services</field>
+        <field name="res_model">hosting.service</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first hosting service!
+            </p>
+            <p>
+                Track and manage your hosting services and servers.
+            </p>
+        </field>
+    </record>
+    
+    <!-- Extension Action -->
+    <record id="action_service_extension" model="ir.actions.act_window">
+        <field name="name">Service Extensions</field>
+        <field name="res_model">service.extension</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first service extension!
+            </p>
+            <p>
+                Manage add-ons and extensions for your hosting and domain services.
+            </p>
+        </field>
+    </record>
+    
+    <!-- SO Dashboard Action -->
+    <record id="action_so_service_dashboard" model="ir.actions.act_window">
+        <field name="name">SO Services Dashboard</field>
+        <field name="res_model">so.service.dashboard</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first SO Service Dashboard!
+            </p>
+            <p>
+                Link Sales Orders with Domain and Hosting services.
+            </p>
+        </field>
+    </record>
+    
+    <!-- Main Menu -->
+    <menuitem id="menu_hosting_domain_root" 
+              name="Hosting &amp; Domains"
+              web_icon="clau_hosting_domain,static/description/icon.png"
+              sequence="80"/>
+    
+    <!-- Dashboard Menu -->
+    <menuitem id="menu_service_dashboard" 
+              name="Dashboard"
+              parent="menu_hosting_domain_root"
+              action="action_service_dashboard"
+              sequence="10"/>
+    
+    <!-- SO Dashboard Menu -->
+    <menuitem id="menu_so_service_dashboard" 
+              name="SO Services Dashboard"
+              parent="menu_hosting_domain_root"
+              action="action_so_service_dashboard"
+              sequence="15"/>
+    
+    <!-- Domain Menu -->
+    <menuitem id="menu_domain_service" 
+              name="Domains"
+              parent="menu_hosting_domain_root"
+              action="action_domain_service"
+              sequence="20"/>
+    
+    <!-- Hosting Menu -->
+    <menuitem id="menu_hosting_service" 
+              name="Hosting"
+              parent="menu_hosting_domain_root"
+              action="action_hosting_service"
+              sequence="30"/>
+    
+    <!-- Extensions Menu -->
+    <menuitem id="menu_service_extension" 
+              name="Extensions"
+              parent="menu_hosting_domain_root"
+              action="action_service_extension"
+              sequence="40"/>
 </odoo>
