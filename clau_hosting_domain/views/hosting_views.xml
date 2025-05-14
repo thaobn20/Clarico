@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Hosting Form View -->
+    <record id="view_hosting_service_form" model="ir.ui.view">
+        <field name="name">hosting.service.form</field>
+        <field name="model">hosting.service</field>
+        <field name="arch" type="xml">
+            <form string="Hosting">
+                <header>
+                    <field name="status" widget="statusbar" statusbar_visible="active,suspended,expired"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options="{'terminology': 'archive'}"/>
+                        </button>
+                        <button name="action_view_domain" type="object" class="oe_stat_button" icon="fa-globe"
+                                attrs="{'invisible': [('domain_id', '=', False)]}">
+                            <field name="domain_id" string="Domain" invisible="1"/>
+                            <span>View Domain</span>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="e.g. Premium Hosting Package"/>
+                        </h1>
+                    </div>
+                    <!-- Add expiration alert banner -->
+                    <div class="alert alert-warning" attrs="{'invisible': ['|', ('days_to_expire', '>', 30), ('days_to_expire', '=', 0)]}">
+                        <strong>Warning!</strong> This hosting service will expire in <field name="days_to_expire" class="oe_inline"/> days.
+                    </div>
+                    <group>
+                        <group>
+                            <field name="domain_id" options="{'no_create': True, 'no_open': False}"/>
+                            <field name="hosting_provider"/>
+                            <field name="server_type"/>
+                        </group>
+                        <group>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="days_to_expire"/>
+                            <field name="auto_renew"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="storage"/>
+                            <field name="bandwidth"/>
+                        </group>
+                    </group>
+                    <!-- Sales Information (only visible when linked to a SO) -->
+                    <group string="Sales Information" attrs="{'invisible': [('sale_order_id', '=', False)]}">
+                        <field name="sale_order_id"/>
+                        <field name="sale_line_id"/>
+                        <button name="action_view_sale_order" string="View Sales Order"
+                                type="object" class="btn-primary"
+                                attrs="{'invisible': [('sale_order_id', '=', False)]}"/>
+                    </group>
+                    <notebook>
+                        <page string="Connection Details">
+                            <group>
+                                <group>
+                                    <field name="ip_address"/>
+                                    <field name="admin_url" widget="url"/>
+                                </group>
+                                <group>
+                                    <field name="admin_username"/>
+                                    <field name="admin_password" password="True"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Add-ons/Extensions">
+                            <field name="extension_ids">
+                                <tree editable="bottom">
+                                    <field name="name"/>
+                                    <field name="price" sum="Total"/>
+                                    <field name="start_date"/>
+                                    <field name="end_date"/>
+                                    <field name="days_to_expire"/>
+                                    <field name="status"/>
+                                </tree>
+                            </field>
+                            <group class="oe_subtotal_footer">
+                                <field name="extension_total" widget="monetary" class="oe_subtotal_footer_separator"/>
+                            </group>
+                        </page>
+                        <page string="Notes">
+                            <field name="note" nolabel="1" placeholder="Internal notes..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+</odoo>

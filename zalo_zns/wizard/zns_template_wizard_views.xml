@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Test Template Wizard Form -->
+    <record id="view_zalo_zns_template_test_form" model="ir.ui.view">
+        <field name="name">zalo.zns.template.test.form</field>
+        <field name="model">zalo.zns.template.test</field>
+        <field name="arch" type="xml">
+            <form string="Test ZNS Template">
+                <group>
+                    <field name="template_id" readonly="1"/>
+                    <field name="phone" placeholder="84xxxxxxxxx"/>
+                </group>
+                <group string="Parameters">
+                    <field name="parameter_ids" nolabel="1">
+                        <tree editable="bottom">
+                            <field name="name" readonly="1"/>
+                            <field name="param_type" readonly="1"/>
+                            <field name="required" readonly="1"/>
+                            <field name="description" readonly="1"/>
+                            <field name="value"/>
+                        </tree>
+                    </field>
+                </group>
+                <footer>
+                    <button name="action_send_test" string="Send Test" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    <!-- Preview Template Wizard Form -->
+    <record id="view_zalo_zns_template_preview_form" model="ir.ui.view">
+        <field name="name">zalo.zns.template.preview.form</field>
+        <field name="model">zalo.zns.template.preview</field>
+        <field name="arch" type="xml">
+            <form string="Template Preview">
+                <group>
+                    <field name="template_id" readonly="1"/>
+                </group>
+                <group string="Content Preview">
+                    <field name="content_preview" nolabel="1" readonly="1"/>
+                </group>
+                <group string="Parameters Used">
+                    <field name="parameters" nolabel="1" readonly="1"/>
+                </group>
+                <footer>
+                    <button string="Close" class="btn-primary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

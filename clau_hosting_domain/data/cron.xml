@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ir_cron_check_service_expiration" model="ir.cron">
+        <field name="name">Check Service Expiration and Send Notifications</field>
+        <field name="model_id" ref="model_so_service_dashboard"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_check_service_expiration()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+</odoo>

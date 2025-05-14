@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Email Template for Service Expiry -->
+    <record id="email_template_service_expiry" model="mail.template">
+        <field name="name">Service Expiry Notification</field>
+        <field name="model_id" ref="model_so_service_dashboard"/>
+        <field name="subject">IMPORTANT: Service Expiry Notification (${ctx.get('days_remaining')} days) - ${object.name}</field>
+        <field name="email_from">${user.company_id.email or ''}</field>
+        <field name="email_to">${object.customer_id.email}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px; font-family: 'Lucida Grande', Ubuntu, Arial, Verdana, sans-serif;">
+                <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                    <strong>IMPORTANT NOTICE</strong>
+                </p>
+                <p style="margin: 10px 0px; padding: 0px; font-size: 13px;">
+                    Dear ${object.customer_id.name},
+                </p>
+                <p style="margin: 10px 0px; padding: 0px; font-size: 13px;">
+                    This is a notification that your services linked to Sales Order <strong>${object.sale_order_id.name}</strong> 
+                    will expire in <strong>${ctx.get('days_remaining', object.days_to_expire)} days</strong>.
+                </p>
+                
+                <h3 style="margin-top: 20px;">Service Summary</h3>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr style="background-color: #f2f2f2;">
+                        <th style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Name</th>
+                        <th style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Expiry Date</th>
+                        <th style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Days Remaining</th>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${object.name}</td>
+                        <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${object.end_date}</td>
+                        <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${object.days_to_expire}</td>
+                    </tr>
+                </table>
+                
+                % if object.domain_ids:
+                <h3 style="margin-top: 20px;">Domain Services</h3>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr style="background-color: #f2f2f2;">
+                        <th style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Domain Name</th>
+                        <th style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Expiry Date</th>
+                        <th style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Days Remaining</th>
+                    </tr>
+                    % for domain in object.domain_ids:
+                    <tr>
+                        <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${domain.name}</td>
+                        <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${domain.end_date}</td>
+                        <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${domain.days_to_expire}</td>
+                    </tr>
+                    % endfor
+                </table>
+                % endif
+                
+                % if object.hosting_ids:
+                <h3 style="margin-top: 20px;">Hosting Services</h3>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr style="background-color: #f2f2f2;">
+                        <th style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Hosting Service</th>
+                        <th style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Expiry Date</th>
+                        <th style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Days Remaining</th>
+                    </tr>
+                    % for hosting in object.hosting_ids:
+                    <tr>
+                        <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${hosting.name}</td>
+                        <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${hosting.end_date}</td>
+                        <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${hosting.days_to_expire}</td>
+                    </tr>
+                    % endfor
+                </table>
+                % endif
+                
+                <p style="margin-top: 20px; padding: 0px; font-size: 13px;">
+                    <strong>Action Required:</strong> Please contact us to discuss renewal options as soon as possible 
+                    to avoid service interruption.
+                </p>
+                
+                <p style="margin-top: 20px; padding: 0px; font-size: 13px;">
+                    Thank you for your business,
+                    <br/>
+                    ${user.company_id.name}
+                </p>
+            </div>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,157 @@
+// BOM Report Styles
+
+// Typography
+.o_report_layout_standard {
+    font-family: 'Arial', 'Helvetica', sans-serif;
+    font-size: 13px;
+    color: #333333;
+    
+    h2 {
+        font-size: 1.8rem !important;
+        font-weight: bold !important;
+        color: #0275d8 !important;
+    }
+    
+    // Company Info Styling
+    .bom-company-info {
+        .bom-company-name {
+            font-size: 1.2rem;
+            color: #333333;
+        }
+        
+        .bom-company-address,
+        .bom-company-contact {
+            font-size: 0.9rem;
+            color: #666666;
+        }
+    }
+    
+    // Table Styling
+    table {
+        &.table-sm {
+            th, td {
+                padding: 0.3rem !important;
+            }
+        }
+        
+        thead {
+            tr {
+                background-color: #0275d8 !important;
+                color: white !important;
+                
+                th {
+                    font-weight: bold !important;
+                    vertical-align: middle !important;
+                    text-align: center !important;
+                    border: 1px solid #0275d8 !important;
+                }
+            }
+        }
+        
+        tbody {
+            tr {
+                border-bottom: 1px solid #dee2e6 !important;
+                
+                &:nth-child(even) {
+                    background-color: rgba(0, 0, 0, 0.02) !important;
+                }
+                
+                td {
+                    vertical-align: middle !important;
+                    border-right: 1px solid #dee2e6 !important;
+                    border-left: 1px solid #dee2e6 !important;
+                    
+                    &:last-child {
+                        border-right: 1px solid #0275d8 !important;
+                    }
+                    
+                    &:first-child {
+                        border-left: 1px solid #0275d8 !important;
+                    }
+                }
+                
+                &:last-child {
+                    td {
+                        border-bottom: 1px solid #0275d8 !important;
+                    }
+                }
+            }
+        }
+    }
+    
+    // Partner Info Box
+    .col-6[style*="border: 1px solid #ddd"] {
+        background-color: #f9f9f9 !important;
+        border-radius: 4px !important;
+    }
+    
+    // Footer Bank Info
+    .footer {
+        font-size: 0.85rem !important;
+        
+        .text-muted {
+            color: #6c757d !important;
+        }
+    }
+    
+    // Totals Table
+    #total {
+        table {
+            tr {
+                &.border-black {
+                    border-top: 1px solid #333 !important;
+                    
+                    &[style*="border-top: 2px solid black"] {
+                        border-top: 2px solid #333 !important;
+                        font-weight: bold !important;
+                    }
+                }
+                
+                td {
+                    padding: 3px !important;
+                }
+            }
+        }
+    }
+    
+    // Signature Lines
+    .row {
+        div[style*="border-top: 1px solid black"] {
+            margin-top: 40px !important; 
+            p {
+                margin-top: 5px !important;
+                font-weight: 600 !important;
+            }
+        }
+    }
+    
+    // Print Specific Styles
+    @media print {
+        font-size: 12px !important;
+        
+        table {
+            page-break-inside: auto !important;
+            
+            thead {
+                display: table-header-group !important;
+            }
+            
+            tbody {
+                display: table-row-group !important;
+            }
+            
+            tr {
+                page-break-inside: avoid !important;
+                page-break-after: auto !important;
+            }
+        }
+        
+        .page-break {
+            page-break-before: always !important;
+        }
+        
+        .header, .footer {
+            font-size: 10px !important;
+        }
+    }
+}

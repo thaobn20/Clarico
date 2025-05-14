@@ -1,0 +1,21 @@
+<svg viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="300" fill="#f8f9fa" />
+  
+  <!-- Header Bar -->
+  <rect width="800" height="70" fill="#875A7B" />
+  <text x="400" y="45" font-family="Arial" font-size="30" font-weight="bold" fill="white" text-anchor="middle">BOM Bulk Product Publish</text>
+  
+  <!-- Icon -->
+  <circle cx="150" cy="170" r="60" fill="#21B799" />
+  <path d="M120,170 L140,190 L180,150" stroke="white" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- Features -->
+  <text x="300" y="130" font-family="Arial" font-size="22" font-weight="bold" fill="#333">Key Features:</text>
+  <text x="300" y="170" font-family="Arial" font-size="18" fill="#333">• One-click publishing for all products</text>
+  <text x="300" y="200" font-family="Arial" font-size="18" fill="#333">• Seamless integration with product views</text>
+  <text x="300" y="230" font-family="Arial" font-size="18" fill="#333">• Time-saving product management</text>
+  
+  <!-- Bottom Bar -->
+  <rect y="270" width="800" height="30" fill="#875A7B" />
+</svg>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form View -->
+    <record id="view_so_service_dashboard_form" model="ir.ui.view">
+        <field name="name">so.service.dashboard.form</field>
+        <field name="model">so.service.dashboard</field>
+        <field name="arch" type="xml">
+            <form string="Services Dashboard">
+                <header>
+                    <!-- Removed problematic buttons -->
+                    <field name="status" widget="statusbar" statusbar_visible="active,expired,suspended"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <!-- Simplified buttons -->
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="e.g. Client Website Services"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="sale_order_id"/>
+                            <field name="customer_id"/>
+                        </group>
+                        <group>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="total_value" widget="monetary"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Domains" name="domains">
+                            <field name="domain_ids" widget="many2many" options="{'no_create': True}">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="domain_provider"/>
+                                    <field name="status"/>
+                                    <field name="start_date"/>
+                                    <field name="end_date"/>
+                                    <field name="days_to_expire"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Hosting" name="hosting">
+                            <field name="hosting_ids" widget="many2many" options="{'no_create': True}">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="hosting_provider"/>
+                                    <field name="server_type"/>
+                                    <field name="status"/>
+                                    <field name="start_date"/>
+                                    <field name="end_date"/>
+                                    <field name="days_to_expire"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Extensions" name="extensions">
+                            <field name="extension_ids" widget="many2many" options="{'no_create': True}">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="service_type"/>
+                                    <field name="service_id"/>
+                                    <field name="price" sum="Total"/>
+                                    <field name="start_date"/>
+                                    <field name="end_date"/>
+                                    <field name="status"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <!-- Removed notification log page -->
+						    <!-- Add this new Notification Log page -->
+						<page string="Notification Log" name="notifications">
+							<group>
+								<group string="Notification Settings">
+									<field name="notification_days" placeholder="e.g. 30,15,5"/>
+								</group>
+								<group string="Notification Status">
+									<label for="notification_30_sent" string="30-Day Notification"/>
+									<div>
+										<field name="notification_30_sent" class="oe_inline"/>
+										<field name="notification_30_date" class="oe_inline" attrs="{'invisible': [('notification_30_sent', '=', False)]}"/>
+									</div>
+									
+									<label for="notification_15_sent" string="15-Day Notification"/>
+									<div>
+										<field name="notification_15_sent" class="oe_inline"/>
+										<field name="notification_15_date" class="oe_inline" attrs="{'invisible': [('notification_15_sent', '=', False)]}"/>
+									</div>
+									
+									<label for="notification_5_sent" string="5-Day Notification"/>
+									<div>
+										<field name="notification_5_sent" class="oe_inline"/>
+										<field name="notification_5_date" class="oe_inline" attrs="{'invisible': [('notification_5_sent', '=', False)]}"/>
+									</div>
+								</group>
+							</group>
+							
+							<group string="Last Notification Content" attrs="{'invisible': [('last_notification_text', '=', False)]}">
+								<field name="last_notification_text" nolabel="1"/>
+							</group>
+							
+							<!-- We'll add the action buttons back later -->
+						</page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_so_service_dashboard_tree" model="ir.ui.view">
+        <field name="name">so.service.dashboard.tree</field>
+        <field name="model">so.service.dashboard</field>
+        <field name="arch" type="xml">
+            <tree string="Services Dashboard">
+                <field name="name"/>
+                <field name="sale_order_id"/>
+                <field name="customer_id"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="domain_count"/>
+                <field name="hosting_count"/>
+                <field name="total_value" sum="Total"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_so_service_dashboard_search" model="ir.ui.view">
+        <field name="name">so.service.dashboard.search</field>
+        <field name="model">so.service.dashboard</field>
+        <field name="arch" type="xml">
+            <search string="Search Dashboard">
+                <field name="name"/>
+                <field name="sale_order_id"/>
+                <field name="customer_id"/>
+                <separator/>
+                <filter string="Active" name="active" domain="[('status', '=', 'active')]"/>
+                <filter string="Expired" name="expired" domain="[('status', '=', 'expired')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Customer" name="group_customer" context="{'group_by': 'customer_id'}"/>
+                    <filter string="Sales Order" name="group_sale_order" context="{'group_by': 'sale_order_id'}"/>
+                    <filter string="Status" name="group_status" context="{'group_by': 'status'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>
