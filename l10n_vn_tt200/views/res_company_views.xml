@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Company Form View Extension for Vietnamese Fields -->
+        <record id="view_company_form_vn" model="ir.ui.view">
+            <field name="name">Company Form - Vietnam</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='accounting_information']" position="after">
+                    <group string="Vietnam Accounting Information" name="vietnam_accounting">
+                        <field name="vn_tax_code"/>
+                        <field name="vn_business_license"/>
+                        <field name="vn_business_license_date"/>
+                        <field name="vn_business_license_place"/>
+                        <field name="vn_legal_representative"/>
+                        <field name="vn_chief_accountant"/>
+                        <field name="vn_fiscal_year_start"/>
+                        <field name="vn_accounting_method"/>
+                        <field name="vn_vat_declaration_period"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

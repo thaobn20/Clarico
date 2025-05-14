@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Account Form View Extension -->
+        <record id="view_account_form_vn" model="ir.ui.view">
+            <field name="name">Account Form - Vietnam</field>
+            <field name="model">account.account</field>
+            <field name="inherit_id" ref="account.view_account_form"/>
+            <field name="arch" type="xml">
+                <field name="code" position="after">
+                    <field name="vn_account_nature"/>
+                    <field name="vn_is_detailed"/>
+                    <field name="vn_parent_account_id" domain="[('company_id', '=', company_id)]"/>
+                    <field name="vn_account_level" readonly="1"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- Account Move Form View Extension -->
+        <record id="view_move_form_vn" model="ir.ui.view">
+            <field name="name">Account Move Form - Vietnam</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <field name="date" position="after">
+                    <field name="vn_document_type"/>
+                    <field name="vn_document_serial"/>
+                    <field name="vn_original_currency_rate" groups="base.group_multi_currency"/>
+                    <field name="vn_vat_period" readonly="1"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- Account Move Line Form View Extension -->
+        <record id="view_move_line_form_vn" model="ir.ui.view">
+            <field name="name">Account Move Line Form - Vietnam</field>
+            <field name="model">account.move.line</field>
+            <field name="inherit_id" ref="account.view_move_line_form"/>
+            <field name="arch" type="xml">
+                <field name="analytic_account_id" position="after">
+                    <field name="vn_analytical_code"/>
+                    <field name="vn_foreign_currency_amount" groups="base.group_multi_currency"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- Tax Form View Extension -->
+        <record id="view_tax_form_vn" model="ir.ui.view">
+            <field name="name">Tax Form - Vietnam</field>
+            <field name="model">account.tax</field>
+            <field name="inherit_id" ref="account.view_tax_form"/>
+            <field name="arch" type="xml">
+                <field name="amount" position="after">
+                    <field name="vn_tax_type"/>
+                    <field name="vn_tax_code"/>
+                    <field name="vn_deductible" attrs="{'invisible': [('vn_tax_type', '!=', 'vat')]}"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- Journal Form View Extension -->
+        <record id="view_account_journal_form_vn" model="ir.ui.view">
+            <field name="name">Journal Form - Vietnam</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+                <field name="type" position="after">
+                    <field name="vn_journal_type"/>
+                    <field name="vn_book_number"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</odoo>

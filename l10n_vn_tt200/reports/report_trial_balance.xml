@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Trial Balance Report Template -->
+        <template id="report_trial_balance_document">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="text-center">
+                        <h2>
+                            <strong>TRIAL BALANCE</strong><br/>
+                            <span style="font-size: 14px;">(SỔ CÂN ĐỐI KẾ TOÁN)</span>
+                        </h2>
+                        <p>From <span t-esc="data['date_from']"/> to <span t-esc="data['date_to']"/></p>
+                        <p>Unit: VND</p>
+                    </div>
+
+                    <table class="table table-sm table-bordered">
+                        <thead>
+                            <tr>
+                                <th rowspan="2" style="vertical-align: middle;">Account Code</th>
+                                <th rowspan="2" style="vertical-align: middle;">Account Name</th>
+                                <th colspan="2" class="text-center">Opening Balance</th>
+                                <th colspan="2" class="text-center">Period Movement</th>
+                                <th colspan="2" class="text-center">Closing Balance</th>
+                            </tr>
+                            <tr>
+                                <th class="text-center">Debit</th>
+                                <th class="text-center">Credit</th>
+                                <th class="text-center">Debit</th>
+                                <th class="text-center">Credit</th>
+                                <th class="text-center">Debit</th>
+                                <th class="text-center">Credit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="data['data']" t-as="line">
+                                <tr>
+                                    <td><span t-esc="line['account_code']"/></td>
+                                    <td><span t-esc="line['account_name']"/></td>
+                                    <td class="text-right">
+                                        <span t-esc="'{:,.0f}'.format(line['opening_debit'])" t-if="line['opening_debit'] > 0"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="'{:,.0f}'.format(line['opening_credit'])" t-if="line['opening_credit'] > 0"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="'{:,.0f}'.format(line['period_debit'])" t-if="line['period_debit'] > 0"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="'{:,.0f}'.format(line['period_credit'])" t-if="line['period_credit'] > 0"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="'{:,.0f}'.format(line['closing_debit'])" t-if="line['closing_debit'] > 0"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="'{:,.0f}'.format(line['closing_credit'])" t-if="line['closing_credit'] > 0"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <div class="row" style="margin-top: 50px;">
+                        <div class="col-6 text-center">
+                            <strong>PREPARED BY</strong><br/>
+                            <span style="font-style: italic;">(Sign and full name)</span><br/><br/><br/>
+                        </div>
+                        <div class="col-6 text-center">
+                            <strong>CHIEF ACCOUNTANT</strong><br/>
+                            <span style="font-style: italic;">(Sign and full name)</span><br/><br/><br/>
+                            <span t-esc="data['company'].vn_chief_accountant"/>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <record id="action_report_trial_balance" model="ir.actions.report">
+            <field name="name">Trial Balance</field>
+            <field name="model">vietnam.financial.report</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">l10n_vn_tt200.report_trial_balance_document</field>
+            <field name="report_file">l10n_vn_tt200.report_trial_balance_document</field>
+            <field name="binding_model_id" ref="base.model_res_company"/>
+            <field name="paperformat_id" ref="base.paperformat_a4"/>
+        </record>
+
+    </data>
+</odoo>

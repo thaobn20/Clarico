@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Balance Sheet Report Template (B01-DN) -->
+        <template id="report_balance_sheet_b01_document">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="text-center">
+                        <h2>
+                            <strong>BALANCE SHEET</strong><br/>
+                            <span style="font-size: 14px;">(B01-DN)</span>
+                        </h2>
+                        <p>As at <span t-esc="data['date']"/></p>
+                        <p>Unit: VND</p>
+                    </div>
+
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th style="width: 50%">ASSETS</th>
+                                <th style="width: 10%">Note</th>
+                                <th style="width: 20%">Amount</th>
+                                <th style="width: 20%">Previous Year</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- CURRENT ASSETS -->
+                            <tr style="font-weight: bold;">
+                                <td colspan="4">A. CURRENT ASSETS</td>
+                            </tr>
+                            <t t-foreach="data['assets']['current_assets'].items()" t-as="item">
+                                <tr>
+                                    <td>
+                                        <span t-if="item[1]['name'].startswith(' ')" style="padding-left: 20px;"/>
+                                        <span t-esc="item[1]['name']"/>
+                                    </td>
+                                    <td><span t-esc="item[0]"/></td>
+                                    <td class="text-right">
+                                        <span t-esc="'{:,.0f}'.format(item[1]['value'])" t-if="item[1]['value'] != 0"/>
+                                    </td>
+                                    <td class="text-right"></td>
+                                </tr>
+                            </t>
+
+                            <!-- LONG-TERM ASSETS -->
+                            <tr style="font-weight: bold;">
+                                <td colspan="4">B. LONG-TERM ASSETS</td>
+                            </tr>
+                            <t t-foreach="data['assets']['long_term_assets'].items()" t-as="item">
+                                <tr>
+                                    <td>
+                                        <span t-if="item[1]['name'].startswith(' ')" style="padding-left: 20px;"/>
+                                        <span t-esc="item[1]['name']"/>
+                                    </td>
+                                    <td><span t-esc="item[0]"/></td>
+                                    <td class="text-right">
+                                        <span t-esc="'{:,.0f}'.format(item[1]['value'])" t-if="item[1]['value'] != 0"/>
+                                    </td>
+                                    <td class="text-right"></td>
+                                </tr>
+                            </t>
+
+                            <!-- TOTAL ASSETS -->
+                            <tr style="font-weight: bold; border-top: 2px solid black;">
+                                <td><span t-esc="data['assets']['total_assets']['name']"/></td>
+                                <td></td>
+                                <td class="text-right">
+                                    <span t-esc="'{:,.0f}'.format(data['assets']['total_assets']['value'])"/>
+                                </td>
+                                <td class="text-right"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table class="table table-sm" style="margin-top: 30px;">
+                        <thead>
+                            <tr>
+                                <th style="width: 50%">LIABILITIES AND OWNER'S EQUITY</th>
+                                <th style="width: 10%">Note</th>
+                                <th style="width: 20%">Amount</th>
+                                <th style="width: 20%">Previous Year</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- LIABILITIES -->
+                            <tr style="font-weight: bold;">
+                                <td colspan="4">C. DEBT</td>
+                            </tr>
+                            <t t-foreach="data['liabilities_equity']['debt'].items()" t-as="item">
+                                <tr>
+                                    <td>
+                                        <span t-if="item[1]['name'].startswith(' ')" style="padding-left: 20px;"/>
+                                        <span t-esc="item[1]['name']"/>
+                                    </td>
+                                    <td><span t-esc="item[0]"/></td>
+                                    <td class="text-right">
+                                        <span t-esc="'{:,.0f}'.format(item[1]['value'])" t-if="item[1]['value'] != 0"/>
+                                    </td>
+                                    <td class="text-right"></td>
+                                </tr>
+                            </t>
+
+                            <!-- EQUITY -->
+                            <tr style="font-weight: bold;">
+                                <td colspan="4">D. OWNER'S EQUITY</td>
+                            </tr>
+                            <t t-foreach="data['liabilities_equity']['equity'].items()" t-as="item">
+                                <tr>
+                                    <td>
+                                        <span t-if="item[1]['name'].startswith(' ')" style="padding-left: 20px;"/>
+                                        <span t-esc="item[1]['name']"/>
+                                    </td>
+                                    <td><span t-esc="item[0]"/></td>
+                                    <td class="text-right">
+                                        <span t-esc="'{:,.0f}'.format(item[1]['value'])" t-if="item[1]['value'] != 0"/>
+                                    </td>
+                                    <td class="text-right"></td>
+                                </tr>
+                            </t>
+
+                            <!-- TOTAL LIABILITIES AND EQUITY -->
+                            <tr style="font-weight: bold; border-top: 2px solid black;">
+                                <td><span t-esc="data['liabilities_equity']['total_liabilities_equity']['name']"/></td>
+                                <td></td>
+                                <td class="text-right">
+                                    <span t-esc="'{:,.0f}'.format(data['liabilities_equity']['total_liabilities_equity']['value'])"/>
+                                </td>
+                                <td class="text-right"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="row" style="margin-top: 50px;">
+                        <div class="col-6 text-center">
+                            <strong>GENERAL DIRECTOR</strong><br/>
+                            <span style="font-style: italic;">(Sign and full name)</span><br/><br/><br/>
+                            <span t-esc="data['company'].vn_legal_representative"/>
+                        </div>
+                        <div class="col-6 text-center">
+                            <strong>CHIEF ACCOUNTANT</strong><br/>
+                            <span style="font-style: italic;">(Sign and full name)</span><br/><br/><br/>
+                            <span t-esc="data['company'].vn_chief_accountant"/>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <record id="action_report_balance_sheet_b01" model="ir.actions.report">
+            <field name="name">Balance Sheet (B01-DN)</field>
+            <field name="model">vietnam.financial.report</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">l10n_vn_tt200.report_balance_sheet_b01_document</field>
+            <field name="report_file">l10n_vn_tt200.report_balance_sheet_b01_document</field>
+            <field name="binding_model_id" ref="base.model_res_company"/>
+            <field name="paperformat_id" ref="base.paperformat_a4"/>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- VAT Declaration Template with 8% VAT -->
+        <template id="report_vat_declaration_document">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="text-center">
+                        <h2>
+                            <strong>VAT DECLARATION</strong><br/>
+                            <span style="font-size: 14px;">(KHAI BÁO THUẾ GTGT)</span>
+                        </h2>
+                        <p>Period: <span t-esc="data['period_month']"/>/<span t-esc="data['period_year']"/></p>
+                        <p>Unit: VND</p>
+                    </div>
+
+                    <!-- Company Information -->
+                    <div class="row">
+                        <div class="col-12">
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td><strong>Company Name:</strong></td>
+                                    <td><span t-esc="data['company'].name"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tax Code:</strong></td>
+                                    <td><span t-esc="data['company'].vn_tax_code"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Address:</strong></td>
+                                    <td><span t-esc="data['company'].street"/>, <span t-esc="data['company'].city"/></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- VAT Summary -->
+                    <h4>I. OUTPUT VAT</h4>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th class="text-right">Taxable Amount</th>
+                                <th class="text-center">Rate</th>
+                                <th class="text-right">VAT Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Sales subject to 0% VAT</td>
+                                <td class="text-right">
+                                    <span t-esc="'{:,.0f}'.format(data['sales_vat_0'])"/>
+                                </td>
+                                <td class="text-center">0%</td>
+                                <td class="text-right">0</td>
+                            </tr>
+                            <tr>
+                                <td>Sales subject to 5% VAT</td>
+                                <td class="text-right">
+                                    <span t-esc="'{:,.0f}'.format(data['sales_vat_5'])"/>
+                                </td>
+                                <td class="text-center">5%</td>
+                                <td class="text-right">
+                                    <span t-esc="'{:,.0f}'.format(data['sales_vat_5'] * 0.05)"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Sales subject to 8% VAT</td>
+                                <td class="text-right">
+                                    <span t-esc="'{:,.0f}'.format(data['sales_vat_8'])"/>
+                                </td>
+                                <td class="text-center">8%</td>
+                                <td class="text-right">
+                                    <span t-esc="'{:,.0f}'.format(data['sales_vat_8'] * 0.08)"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Sales subject to 10% VAT</td>
+                                <td class="text-right">
+                                    <span t-esc="'{:,.0f}'.format(data['sales_vat_10'])"/>
+                                </td>
+                                <td class="text-center">10%</td>
+                                <td class="text-right">
+                                    <span t-esc="'{:,.0f}'.format(data['sales_vat_10'] * 0.10)"/>
+                                </td>
+                            </tr>
+                            <tr style="font-weight: bold;">
+                                <td>Total Output VAT</td>
+                                <td class="text-right">
+                                    <span t-esc="'{:,.0f}'.format(data['sales_vat_0'] + data['sales_vat_5'] + data['sales_vat_8'] + data['sales_vat_10'])"/>
+                                </td>
+                                <td></td>
+                                <td class="text-right">
+                                    <span t-esc="'{:,.0f}'.format(data['sales_vat_5'] * 0.05 + data['sales_vat_8'] * 0.08 + data['sales_vat_10'] * 0.10)"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4>II. INPUT VAT</h4>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th class="text-right">Taxable Amount</th>
+                                <th class="text-center">Rate</th>
+                                <th class="text-right">VAT Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Purchases subject to 0% VAT</td>
+                                <td class="text-right">
+                                    <span t-esc="'{:,.0f}'.format(data['input_vat_0'])"/>
+                                </td>
+                                <td class="text-center">0%</td>
+                                <td class="text-right">0</td>
+                            </tr>
+                            <tr>
+                                <td>Purchases subject to 5% VAT</td>
+                                <td class="text-right">
+                                    <span t-esc="'{:,.0f}'.format(data['input_vat_5'])"/>
+                                </td>
+                                <td class="text-center">5%</td>
+                                <td class="text-right">
+                                    <span t-esc="'{:,.0f}'.format(data['input_vat_5'] * 0.05)"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Purchases subject to 8% VAT</td>
+                                <td class="text-right">
+                                    <span t-esc="'{:,.0f}'.format(data['input_vat_8'])"/>
+                                </td>
+                                <td class="text-center">8%</td>
+                                <td class="text-right">
+                                    <span t-esc="'{:,.0f}'.format(data['input_vat_8'] * 0.08)"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Purchases subject to 10% VAT</td>
+                                <td class="text-right">
+                                    <span t-esc="'{:,.0f}'.format(data['input_vat_10'])"/>
+                                </td>
+                                <td class="text-center">10%</td>
+                                <td class="text-right">
+                                    <span t-esc="'{:,.0f}'.format(data['input_vat_10'] * 0.10)"/>
+                                </td>
+                            </tr>
+                            <tr style="font-weight: bold;">
+                                <td>Total Input VAT</td>
+                                <td class="text-right">
+                                    <span t-esc="'{:,.0f}'.format(data['input_vat_0'] + data['input_vat_5'] + data['input_vat_8'] + data['input_vat_10'])"/>
+                                </td>
+                                <td></td>
+                                <td class="text-right">
+                                    <span t-esc="'{:,.0f}'.format(data['input_vat_5'] * 0.05 + data['input_vat_8'] * 0.08 + data['input_vat_10'] * 0.10)"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4>III. VAT PAYABLE</h4>
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <td><strong>VAT Payable (Output VAT - Input VAT)</strong></td>
+                                <td class="text-right">
+                                    <strong><span t-esc="'{:,.0f}'.format(data['vat_payable'])"/></strong>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="row" style="margin-top: 50px;">
+                        <div class="col-6 text-center">
+                            <strong>GENERAL DIRECTOR</strong><br/>
+                            <span style="font-style: italic;">(Sign and full name)</span><br/><br/><br/>
+                            <span t-esc="data['company'].vn_legal_representative"/>
+                        </div>
+                        <div class="col-6 text-center">
+                            <strong>CHIEF ACCOUNTANT</strong><br/>
+                            <span style="font-style: italic;">(Sign and full name)</span><br/><br/><br/>
+                            <span t-esc="data['company'].vn_chief_accountant"/>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <!-- Report Actions -->
+        <record id="action_report_vat_declaration" model="ir.actions.report">
+            <field name="name">VAT Declaration</field>
+            <field name="model">vietnam.vat.declaration</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">l10n_vn_tt200.report_vat_declaration_document</field>
+            <field name="report_file">l10n_vn_tt200.report_vat_declaration_document</field>
+            <field name="binding_model_id" ref="model_vietnam_vat_declaration"/>
+            <field name="paperformat_id" ref="base.paperformat_a4"/>
+        </record>
+
+    </data>
+</odoo>

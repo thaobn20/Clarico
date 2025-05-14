@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Vietnam Chart of Accounts Template -->
+        <record id="l10n_vn_chart_template" model="account.chart.template">
+            <field name="name">Vietnam - Chart of Accounts (TT200/2014)</field>
+            <field name="code_digits">6</field>
+            <field name="currency_id" ref="base.VND"/>
+            <field name="bank_account_code_prefix">112</field>
+            <field name="cash_account_code_prefix">111</field>
+            <field name="transfer_account_code_prefix">119</field>
+        </record>
+
+        <!-- Account Types for Vietnam -->
+        <record id="account_type_vn_current_assets" model="account.account.type">
+            <field name="name">Current Assets (VN)</field>
+            <field name="type">other</field>
+            <field name="internal_group">asset</field>
+        </record>
+
+        <record id="account_type_vn_fixed_assets" model="account.account.type">
+            <field name="name">Fixed Assets (VN)</field>
+            <field name="type">other</field>
+            <field name="internal_group">asset</field>
+        </record>
+
+        <record id="account_type_vn_current_liabilities" model="account.account.type">
+            <field name="name">Current Liabilities (VN)</field>
+            <field name="type">other</field>
+            <field name="internal_group">liability</field>
+        </record>
+
+        <record id="account_type_vn_long_term_liabilities" model="account.account.type">
+            <field name="name">Long-term Liabilities (VN)</field>
+            <field name="type">other</field>
+            <field name="internal_group">liability</field>
+        </record>
+
+        <record id="account_type_vn_equity" model="account.account.type">
+            <field name="name">Equity (VN)</field>
+            <field name="type">other</field>
+            <field name="internal_group">equity</field>
+        </record>
+
+        <record id="account_type_vn_income" model="account.account.type">
+            <field name="name">Income (VN)</field>
+            <field name="type">other</field>
+            <field name="internal_group">income</field>
+        </record>
+
+        <record id="account_type_vn_expense" model="account.account.type">
+            <field name="name">Expense (VN)</field>
+            <field name="type">other</field>
+            <field name="internal_group">expense</field>
+        </record>
+
+        <!-- Main Account Templates -->
+        <!-- ASSETS -->
+        <!-- Cash and Bank Accounts -->
+        <record id="l10n_vn_chart_111" model="account.account.template">
+            <field name="name">Cash</field>
+            <field name="code">111</field>
+            <field name="user_type_id" ref="account_type_vn_current_assets"/>
+            <field name="chart_template_id" ref="l10n_vn_chart_template"/>
+        </record>
+
+        <record id="l10n_vn_chart_1111" model="account.account.template">
+            <field name="name">Cash in VND</field>
+            <field name="code">1111</field>
+            <field name="user_type_id" ref="account_type_vn_current_assets"/>
+            <field name="chart_template_id" ref="l10n_vn_chart_template"/>
+        </record>
+
+        <record id="l10n_vn_chart_1112" model="account.account.template">
+            <field name="name">Cash in Foreign Currency</field>
+            <field name="code">1112</field>
+            <field name="user_type_id" ref="account_type_vn_current_assets"/>
+            <field name="chart_template_id" ref="l10n_vn_chart_template"/>
+        </record>
+
+        <record id="l10n_vn_chart_112" model="account.account.template">
+            <field name="name">Bank Deposits</field>
+            <field name="code">112</field>
+            <field name="user_type_id" ref="account_type_vn_current_assets"/>
+            <field name="chart_template_id" ref="l10n_vn_chart_template"/>
+        </record>
+
+        <record id="l10n_vn_chart_1121" model="account.account.template">
+            <field name="name">VND Bank Deposits</field>
+            <field name="code">1121</field>
+            <field name="user_type_id" ref="account_type_vn_current_assets"/>
+            <field name="chart_template_id" ref="l10n_vn_chart_template"/>
+        </record>
+
+        <record id="l10n_vn_chart_1122" model="account.account.template">
+            <field name="name">Foreign Currency Bank Deposits</field>
+            <field name="code">1122</field>
+            <field name="user_type_id" ref="account_type_vn_current_assets"/>
+            <field name="chart_template_id" ref="l10n_vn_chart_template"/>
+        </record>
+
+        <!-- Receivables -->
+        <record id="l10n_vn_chart_131" model="account.account.template">
+            <field name="name">Account Receivables</field>
+            <field name="code">131</field>
+            <field name="user_type_id" ref="account.data_account_type_receivable"/>
+            <field name="chart_template_id" ref="l10n_vn_chart_template"/>
+            <field name="reconcile">True</field>
+        </record>
+
+        <record id="l10n_vn_chart_1311" model="account.account.template">
+            <field name="name">Trade Receivables</field>
+            <field name="code">1311</field>
+            <field name="user_type_id" ref="account.data_account_type_receivable"/>
+            <field name="chart_template_id" ref="l10n_vn_chart_template"/>
+            <field name="reconcile">True</field>
+        </record>
+
+        <record id="l10n_vn_chart_1312" model="account.account.template">
+            <field name="name">Prepayments to Suppliers</field>
+            <field name="code">1312</field>
+            <field name="user_type_id" ref="account_type_vn_current_assets"/>
+            <field name="chart_template_id" ref="l10n_vn_chart_template"/>
+        </record>
+
+        <record id="l10n_vn_chart_1331" model="account.account.template">
+            <field name="name">VAT Deductible</field>
+            <field name="code">1331</field>
+            <field name="user_type_id" ref="account_type_vn_current_assets"/>
+            <field name="chart_template_id" ref="l10n_vn_chart_template"/>
+        </record>
+
+        <!-- Inventory -->
+        <record id="l10n_vn_chart_152" model="account.account.template">
+            <field name="name">Finished Goods</field>
+            <field name="code">152</field>
+            <field name="user_type_id" ref="account_type_vn_current_assets"/>
+            <field name="chart_template_id" ref="l10n_vn_chart_template"/>
+        </record>
+
+        <record id="l10n_vn_chart_1521" model="account.account.template">
+            <field name="name">Finished Goods in Stock</field>
+            <field name="code">1521</field>
+            <field name="user_type_id" ref="account_type_vn_current_assets"/>
+            <field name="chart_template_id" ref="l10n_vn_chart_template"/>
+        </record>
+
+        <record id="l10n_vn_chart_151" model="account.account.template">
+            <field name="name">Raw Materials</field>
+            <field name="code">151</field>
+            <field name="user_type_id" ref="account_type_vn_current_assets"/>
+            <field name="chart_template_id" ref="l10n_vn_chart_template"/>
+        </record>
+
+        <!-- Fixed Assets -->
+        <record id="l10n_vn_chart_211" model="account.account.template">
+            <field name="name">Tangible Fixed Assets</field>
+            <field name="code">211</field>
+            <field name="user_type_id" ref="account_type_vn_fixed_assets"/>
+            <field name="chart_template_id" ref="l10n_vn_chart_template"/>
+        </record>
+
+        <record id="l10n_vn_chart_2111" model="account.account.template">
+            <field name="name">Buildings and Structures</field>
+            <field name="code">2111</field>
+            <field name="user_type_id" ref="account_type_vn_fixed_assets"/>
+            <field name="chart_template_id" ref="l10n_vn_chart_template"/>
+        </record>
+
+        <record id="l10n_vn_chart_2112" model="account.account.template">
+            <field name="name">Machinery and Equipment</field>
+            <field name="code">2112</field>
+            <field name="user_type_id" ref="account_type_vn_fixed_assets"/>
+            <field name="chart_template_id" ref="l10n_vn_chart_template"/>
+        </record>
+
+        <record id="l10n_vn_chart_214" model="account.account.template">
+            <field name="name">Accumulated Depreciation</field>
+            <field name="code">214</field>
+            <field name="user_type_id" ref="account_type_vn_fixed_assets"/>
+            <field name="chart_template_id" ref="l10n_vn_chart_template"/>
+        </record>
+
+        <!-- LIABILITIES -->
+        <!-- Short-term Payables -->
+        <record id="l10n_vn_chart_331" model="account.account.template">
+            <field name="name">Account Payables</field>
+            <field name="code">331</field>
+            <field name="user_type_id" ref="account.data_account_type_payable"/>
+            <field name="chart_template_id" ref="l10n_vn_chart_template"/>
+            <field name="reconcile">True</field>
+        </record>
+
+        <record id="l10n_vn_chart_3311" model="account.account.template">
+            <field name="name">Trade Payables</field>
+            <field name="code">3311</field>
+            <field name="user_type_id" ref="account.data_account_type_payable"/>
+            <field name="chart_template_id" ref="l10n_vn_chart_template"/>
+            <field name="reconcile">True</field>
+        </record>
+
+        <record id="l10n_vn_chart_3333" model="account.account.template">
+            <field name="name">VAT Payable</field>
+            <field name="code">3333</field>
+            <field name="user_type_id" ref="account_type_vn_current_liabilities"/>
+            <field name="chart_template_id" ref="l10n_vn_chart_template"/>
+        </record>
+
+        <!-- EQUITY -->
+        <record id="l10n_vn_chart_411" model="account.account.template">
+            <field name="name">Share Capital</field>
+            <field name="code">411</field>
+            <field name="user_type_id" ref="account_type_vn_equity"/>
+            <field name="chart_template_id" ref="l10n_vn_chart_template"/>
+        </record>
+
+        <record id="l10n_vn_chart_421" model="account.account.template">
+            <field name="name">Retained Earnings</field>
+            <field name="code">421</field>
+            <field name="user_type_id" ref="account_type_vn_equity"/>
+            <field name="chart_template_id" ref="l10n_vn_chart_template"/>
+        </record>
+
+        <!-- INCOME -->
+        <record id="l10n_vn_chart_511" model="account.account.template">
+            <field name="name">Sales Revenue</field>
+            <field name="code">511</field>
+            <field name="user_type_id" ref="account_type_vn_income"/>
+            <field name="chart_template_id" ref="l10n_vn_chart_template"/>
+        </record>
+
+        <record id="l10n_vn_chart_5111" model="account.account.template">
+            <field name="name">Sales Revenue - Domestic</field>
+            <field name="code">5111</field>
+            <field name="user_type_id" ref="account_type_vn_income"/>
+            <field name="chart_template_id" ref="l10n_vn_chart_template"/>
+        </record>
+
+        <record id="l10n_vn_chart_5112" model="account.account.template">
+            <field name="name">Sales Revenue - Export</field>
+            <field name="code">5112</field>
+            <field name="user_type_id" ref="account_type_vn_income"/>
+            <field name="chart_template_id" ref="l10n_vn_chart_template"/>
+        </record>
+
+        <record id="l10n_vn_chart_515" model="account.account.template">
+            <field name="name">Exchange Rate Gains</field>
+            <field name="code">515</field>
+            <field name="user_type_id" ref="account_type_vn_income"/>
+            <field name="chart_template_id" ref="l10n_vn_chart_template"/>
+        </record>
+
+        <!-- EXPENSES -->
+        <record id="l10n_vn_chart_621" model="account.account.template">
+            <field name="name">Cost of Goods Sold</field>
+            <field name="code">621</field>
+            <field name="user_type_id" ref="account_type_vn_expense"/>
+            <field name="chart_template_id" ref="l10n_vn_chart_template"/>
+        </record>
+
+        <record id="l10n_vn_chart_6211" model="account.account.template">
+            <field name="name">Cost of Finished Goods Sold</field>
+            <field name="code">6211</field>
+            <field name="user_type_id" ref="account_type_vn_expense"/>
+            <field name="chart_template_id" ref="l10n_vn_chart_template"/>
+        </record>
+
+        <record id="l10n_vn_chart_635" model="account.account.template">
+            <field name="name">Exchange Rate Losses</field>
+            <field name="code">635</field>
+            <field name="user_type_id" ref="account_type_vn_expense"/>
+            <field name="chart_template_id" ref="l10n_vn_chart_template"/>
+        </record>
+
+        <record id="l10n_vn_chart_642" model="account.account.template">
+            <field name="name">Selling Expenses</field>
+            <field name="code">642</field>
+            <field name="user_type_id" ref="account_type_vn_expense"/>
+            <field name="chart_template_id" ref="l10n_vn_chart_template"/>
+        </record>
+
+        <record id="l10n_vn_chart_641" model="account.account.template">
+            <field name="name">Administrative Expenses</field>
+            <field name="code">641</field>
+            <field name="user_type_id" ref="account_type_vn_expense"/>
+            <field name="chart_template_id" ref="l10n_vn_chart_template"/>
+        </record>
+
+    </data>
+</odoo>

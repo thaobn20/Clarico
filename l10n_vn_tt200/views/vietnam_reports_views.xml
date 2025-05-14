@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Vietnam VAT Declaration Views -->
+        <record id="view_vietnam_vat_declaration_form" model="ir.ui.view">
+            <field name="name">Vietnam VAT Declaration Form</field>
+            <field name="model">vietnam.vat.declaration</field>
+            <field name="arch" type="xml">
+                <form string="VAT Declaration">
+                    <header>
+                        <button name="action_generate_declaration" type="object" 
+                                string="Generate Data" class="btn-primary"/>
+                        <button name="%(action_report_vat_declaration)d" type="action" 
+                                string="Print Declaration" class="btn-secondary"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="period_year"/>
+                                <field name="period_month"/>
+                                <field name="company_id"/>
+                            </group>
+                            <group>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="vat_payable" readonly="1"/>
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <page string="Output VAT" name="output_vat">
+                                <group>
+                                    <group string="Sales">
+                                        <field name="sales_vat_0"/>
+                                        <field name="sales_vat_5"/>
+                                        <field name="sales_vat_8"/>
+                                        <field name="sales_vat_10"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Input VAT" name="input_vat">
+                                <group>
+                                    <group string="Purchases">
+                                        <field name="input_vat_0"/>
+                                        <field name="input_vat_5"/>
+                                        <field name="input_vat_8"/>
+                                        <field name="input_vat_10"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_vietnam_vat_declaration_tree" model="ir.ui.view">
+            <field name="name">Vietnam VAT Declaration Tree</field>
+            <field name="model">vietnam.vat.declaration</field>
+            <field name="arch" type="xml">
+                <tree string="VAT Declarations">
+                    <field name="name"/>
+                    <field name="period_year"/>
+                    <field name="period_month"/>
+                    <field name="company_id"/>
+                    <field name="vat_payable"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_vietnam_vat_declaration" model="ir.actions.act_window">
+            <field name="name">VAT Declarations</field>
+            <field name="res_model">vietnam.vat.declaration</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first VAT Declaration
+                </p>
+                <p>
+                    Generate VAT declarations according to Vietnamese tax regulations.
+                </p>
+            </field>
+        </record>
+
+        <!-- Financial Report Wizard Views -->
+        <record id="view_financial_report_wizard_form" model="ir.ui.view">
+            <field name="name">Financial Report Wizard</field>
+            <field name="model">vietnam.financial.report.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Generate Financial Report">
+                    <group>
+                        <group>
+                            <field name="report_type"/>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                        </group>
+                        <group>
+                            <field name="company_id"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_generate_report" type="object" 
+                                string="Generate Report" class="btn-primary"/>
+                        <button name="action_export_excel" type="object" 
+                                string="Export to Excel" class="btn-secondary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_financial_report_wizard" model="ir.actions.act_window">
+            <field name="name">Generate Financial Report</field>
+            <field name="res_model">vietnam.financial.report.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- VAT Declaration Wizard Views -->
+        <record id="view_vat_declaration_wizard_form" model="ir.ui.view">
+            <field name="name">VAT Declaration Wizard</field>
+            <field name="model">vietnam.vat.declaration.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Create VAT Declaration">
+                    <group>
+                        <group>
+                            <field name="period_year"/>
+                            <field name="period_month"/>
+                        </group>
+                        <group>
+                            <field name="company_id"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_create_declaration" type="object" 
+                                string="Create Declaration" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_vat_declaration_wizard" model="ir.actions.act_window">
+            <field name="name">Create VAT Declaration</field>
+            <field name="res_model">vietnam.vat.declaration.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</odoo>

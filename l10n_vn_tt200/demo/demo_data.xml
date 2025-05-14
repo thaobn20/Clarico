@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Demo Company Data -->
+        <record id="demo_company_vietnam" model="res.company">
+            <field name="name">Demo Company Vietnam Ltd.</field>
+            <field name="vn_tax_code">0123456789</field>
+            <field name="vn_business_license">0123456789-000</field>
+            <field name="vn_business_license_date">2020-01-01</field>
+            <field name="vn_business_license_place">Ho Chi Minh City</field>
+            <field name="vn_legal_representative">Nguyen Van A</field>
+            <field name="vn_chief_accountant">Tran Thi B</field>
+            <field name="vn_fiscal_year_start">2024-01-01</field>
+            <field name="vn_accounting_method">accrual</field>
+            <field name="vn_vat_declaration_period">monthly</field>
+            <field name="currency_id" ref="base.VND"/>
+        </record>
+
+        <!-- Demo VAT Declaration -->
+        <record id="demo_vat_declaration_current" model="vietnam.vat.declaration">
+            <field name="period_year">2024</field>
+            <field name="period_month">12</field>
+            <field name="company_id" ref="demo_company_vietnam"/>
+            <field name="sales_vat_0">1000000000</field>
+            <field name="sales_vat_5">2000000000</field>
+            <field name="sales_vat_10">3000000000</field>
+            <field name="input_vat_0">500000000</field>
+            <field name="input_vat_5">1000000000</field>
+            <field name="input_vat_10">1500000000</field>
+        </record>
+
+        <!-- Demo Account Examples -->
+        <record id="demo_account_cash_vnd" model="account.account">
+            <field name="name">Cash in VND - Demo</field>
+            <field name="code">1111001</field>
+            <field name="user_type_id" ref="account.data_account_type_current_assets"/>
+            <field name="company_id" ref="demo_company_vietnam"/>
+            <field name="vn_account_nature">debit</field>
+            <field name="vn_is_detailed">True</field>
+            <field name="vn_account_level">7</field>
+        </record>
+
+        <record id="demo_account_bank_vnd" model="account.account">
+            <field name="name">Bank VND - Demo</field>
+            <field name="code">1121001</field>
+            <field name="user_type_id" ref="account.data_account_type_current_assets"/>
+            <field name="company_id" ref="demo_company_vietnam"/>
+            <field name="vn_account_nature">debit</field>
+            <field name="vn_is_detailed">True</field>
+            <field name="vn_account_level">7</field>
+        </record>
+
+        <!-- Demo Tax Examples -->
+        <record id="demo_tax_vat_10_sale" model="account.tax">
+            <field name="name">VAT 10% - Sales (Demo)</field>
+            <field name="amount">10</field>
+            <field name="amount_type">percent</field>
+            <field name="type_tax_use">sale</field>
+            <field name="company_id" ref="demo_company_vietnam"/>
+            <field name="vn_tax_type">vat</field>
+            <field name="vn_tax_code">VAT10S</field>
+            <field name="vn_deductible">True</field>
+        </record>
+
+        <record id="demo_tax_vat_10_purchase" model="account.tax">
+            <field name="name">VAT 10% - Purchase (Demo)</field>
+            <field name="amount">10</field>
+            <field name="amount_type">percent</field>
+            <field name="type_tax_use">purchase</field>
+            <field name="company_id" ref="demo_company_vietnam"/>
+            <field name="vn_tax_type">vat</field>
+            <field name="vn_tax_code">VAT10P</field>
+            <field name="vn_deductible">True</field>
+        </record>
+
+        <!-- Demo Journal Examples -->
+        <record id="demo_journal_cash" model="account.journal">
+            <field name="name">Cash Journal - Demo</field>
+            <field name="code">CASH</field>
+            <field name="type">cash</field>
+            <field name="company_id" ref="demo_company_vietnam"/>
+            <field name="vn_journal_type">cash</field>
+            <field name="vn_book_number">CASH-001</field>
+        </record>
+
+        <record id="demo_journal_bank" model="account.journal">
+            <field name="name">Bank Journal - Demo</field>
+            <field name="code">BANK</field>
+            <field name="type">bank</field>
+            <field name="company_id" ref="demo_company_vietnam"/>
+            <field name="vn_journal_type">bank</field>
+            <field name="vn_book_number">BANK-001</field>
+        </record>
+
+        <record id="demo_journal_sale" model="account.journal">
+            <field name="name">Sales Journal - Demo</field>
+            <field name="code">SALE</field>
+            <field name="type">sale</field>
+            <field name="company_id" ref="demo_company_vietnam"/>
+            <field name="vn_journal_type">sale</field>
+            <field name="vn_book_number">SALE-001</field>
+        </record>
+
+        <record id="demo_journal_purchase" model="account.journal">
+            <field name="name">Purchase Journal - Demo</field>
+            <field name="code">PURCH</field>
+            <field name="type">purchase</field>
+            <field name="company_id" ref="demo_company_vietnam"/>
+            <field name="vn_journal_type">purchase</field>
+            <field name="vn_book_number">PURCH-001</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Income Statement Report Template (B02-DN) -->
+        <template id="report_income_statement_b02_document">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="text-center">
+                        <h2>
+                            <strong>INCOME STATEMENT</strong><br/>
+                            <span style="font-size: 14px;">(B02-DN)</span>
+                        </h2>
+                        <p>For the period from <span t-esc="data['date_from']"/> to <span t-esc="data['date_to']"/></p>
+                        <p>Unit: VND</p>
+                    </div>
+
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th style="width: 50%">ITEMS</th>
+                                <th style="width: 10%">Note</th>
+                                <th style="width: 20%">Amount</th>
+                                <th style="width: 20%">Previous Year</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- REVENUE SECTION -->
+                            <t t-foreach="data['data']['revenue'].items()" t-as="item">
+                                <tr>
+                                    <td>
+                                        <span t-if="item[1]['name'].startswith(' ')" style="padding-left: 20px;"/>
+                                        <span t-esc="item[1]['name']"/>
+                                    </td>
+                                    <td><span t-esc="item[0]"/></td>
+                                    <td class="text-right">
+                                        <span t-esc="'{:,.0f}'.format(item[1]['value'])" t-if="item[1]['value'] != 0"/>
+                                    </td>
+                                    <td class="text-right"></td>
+                                </tr>
+                            </t>
+
+                            <!-- FINANCIAL SECTION -->
+                            <t t-foreach="data['data']['financial'].items()" t-as="item">
+                                <tr>
+                                    <td>
+                                        <span t-if="item[1]['name'].startswith(' ')" style="padding-left: 20px;"/>
+                                        <span t-esc="item[1]['name']"/>
+                                    </td>
+                                    <td><span t-esc="item[0]"/></td>
+                                    <td class="text-right">
+                                        <span t-esc="'{:,.0f}'.format(item[1]['value'])" t-if="item[1]['value'] != 0"/>
+                                    </td>
+                                    <td class="text-right"></td>
+                                </tr>
+                            </t>
+
+                            <!-- OPERATING SECTION -->
+                            <t t-foreach="data['data']['operating'].items()" t-as="item">
+                                <tr>
+                                    <td>
+                                        <span t-if="item[1]['name'].startswith(' ')" style="padding-left: 20px;"/>
+                                        <span t-esc="item[1]['name']"/>
+                                    </td>
+                                    <td><span t-esc="item[0]"/></td>
+                                    <td class="text-right">
+                                        <span t-esc="'{:,.0f}'.format(item[1]['value'])" t-if="item[1]['value'] != 0"/>
+                                    </td>
+                                    <td class="text-right"></td>
+                                </tr>
+                            </t>
+
+                            <!-- COMPREHENSIVE INCOME -->
+                            <t t-foreach="data['data']['comprehensive'].items()" t-as="item">
+                                <tr style="font-weight: bold;" t-if="item[0] == '70'">
+                                    <td><span t-esc="item[1]['name']"/></td>
+                                    <td><span t-esc="item[0]"/></td>
+                                    <td class="text-right">
+                                        <span t-esc="'{:,.0f}'.format(item[1]['value'])"/>
+                                    </td>
+                                    <td class="text-right"></td>
+                                </tr>
+                                <tr t-else="">
+                                    <td><span t-esc="item[1]['name']"/></td>
+                                    <td><span t-esc="item[0]"/></td>
+                                    <td class="text-right">
+                                        <span t-esc="'{:,.0f}'.format(item[1]['value'])" t-if="item[1]['value'] != 0"/>
+                                    </td>
+                                    <td class="text-right"></td>
+                                </tr>
+                            </t>
+
+                            <!-- EARNINGS PER SHARE -->
+                            <t t-foreach="data['data']['eps'].items()" t-as="item">
+                                <tr>
+                                    <td><span t-esc="item[1]['name']"/></td>
+                                    <td><span t-esc="item[0]"/></td>
+                                    <td class="text-right">
+                                        <span t-esc="'{:.2f}'.format(item[1]['value'])" t-if="item[1]['value'] != 0"/>
+                                    </td>
+                                    <td class="text-right"></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <div class="row" style="margin-top: 50px;">
+                        <div class="col-6 text-center">
+                            <strong>GENERAL DIRECTOR</strong><br/>
+                            <span style="font-style: italic;">(Sign and full name)</span><br/><br/><br/>
+                            <span t-esc="data['company'].vn_legal_representative"/>
+                        </div>
+                        <div class="col-6 text-center">
+                            <strong>CHIEF ACCOUNTANT</strong><br/>
+                            <span style="font-style: italic;">(Sign and full name)</span><br/><br/><br/>
+                            <span t-esc="data['company'].vn_chief_accountant"/>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <record id="action_report_income_statement_b02" model="ir.actions.report">
+            <field name="name">Income Statement (B02-DN)</field>
+            <field name="model">vietnam.financial.report</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">l10n_vn_tt200.report_income_statement_b02_document</field>
+            <field name="report_file">l10n_vn_tt200.report_income_statement_b02_document</field>
+            <field name="binding_model_id" ref="base.model_res_company"/>
+            <field name="paperformat_id" ref="base.paperformat_a4"/>
+        </record>
+
+    </data>
+</odoo>
